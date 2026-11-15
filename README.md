@@ -4,6 +4,9 @@ Pluginpakke fra **Trønder Data**, versjon **1.2.0**, med norsk oppsetts-, drift
 
 Pakken er laget for import gjennom arbeidsområdets GitHub-marketplace. Den oppretter ingen MCP-server, Keycloak-klient eller ny app. Endepunktet er `https://tactical-mcp.tronderdata.no/chatgpt/mcp`, og teknikeren bruker egen Keycloak-innlogging og egne Tactical-rettigheter.
 
+Offentlig kilde-repo: [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin).
+Ved arbeidsområdeimport brukes **Source** `https://github.com/SveinT83/tactical-rmm-plugin`, tom **Path** og **Branch** `main`. Marketplace-filen er `.agents/plugins/marketplace.json` i repoets rotstruktur. Import og nettleserbruk er fortsatt ikke testet.
+
 **Status:** Lokal kilde og installasjonsarkiv er levert. Eksisterende personlig app er testet med ett avgrenset datakall. Tilgang til appen i arbeidsområdet, faktisk GitHub-import og ChatGPT-nettleserbruk er ikke verifisert. `.app.json` gir ikke i seg selv nettleserstøtte. Se [teststatus](docs/VERIFICATION.md) og [nettleser og arbeidsområde](plugins/tactical-rmm/docs/WORKSPACE.md).
 
 ## Innhold
@@ -70,7 +73,7 @@ Start med «Finn endepunktet for Tactical-versjon, og les versjonen uten å gjø
 
 ## Arbeidsområde, bruk og oppdateringer
 
-1. Velg faktisk GitHub-repo, eier og synlighet; ingen remote er antatt. Push gjennomgått kilde. Et lokalt Git-repo er klargjort.
+1. Gjennomgå endringer og push til `main` i [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin). Repoet er offentlig etter eierens uttrykkelige valg, og lokal `origin` peker til dette repoet.
 2. En arbeidsområdeadministrator importerer repoet og kontrollerer apprettigheter etter [arbeidsområdedokumentasjonen](plugins/tactical-rmm/docs/WORKSPACE.md).
 3. Hver tekniker autentiserer sin egen konto. Administrator fullfører eventuell personlig nøkkelkobling på serversiden etter [administratordokumentasjonen](plugins/tactical-rmm/docs/ADMIN.md).
 4. Ved drift: finn riktig kunde, lokasjon og maskin, gi en avgrenset bestilling og kontroller rapportert resultat. Skillen følger vertens godkjenningsregler.

@@ -44,4 +44,4 @@ Tilgangsskillen skiller mellom egen selvbetjening og management-administrasjon a
 
 Oppdater pakken med bekreftet setup-opprinnelse/-URL, faktisk feilsemantikk og eventuelle nødvendige instruksjoner fra verktøyskjemaene. Kjør offentlig metadata-probe, lokale tester og et avgrenset personlig lesekall på nytt. Test med egne roller før vanlig utrulling.
 
-Arbeidsområdeadministrator må dessuten bekrefte gjenbrukbar tilgang til den eksisterende registrerte appen, importere fra valgt GitHub-repo og teste i en ny ChatGPT-nettlesersamtale. Det siste kan ikke bevises med lokal CLI-installasjon. GitHub-destinasjonen er fortsatt ikke valgt; ingen remote eller synlighet er antatt.
+Arbeidsområdeadministrator må dessuten bekrefte gjenbrukbar tilgang til den eksisterende registrerte appen, importere fra [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin) med tom Path og branch `main`, og teste i en ny ChatGPT-nettlesersamtale. Det siste kan ikke bevises med lokal CLI-installasjon. Repoet ble opprettet offentlig etter eierens uttrykkelige valg 15. november 2026.

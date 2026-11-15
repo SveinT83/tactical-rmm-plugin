@@ -9,7 +9,7 @@
 | MCP offentlig metadata | Bestått | Resource, issuer, scope, PKCE S256, initialisering og faktisk `tools/list` |
 | Live MCP gjennom eksisterende personlig app | Bestått | API-katalogsøk og GET `core.core-version`; Tactical svarte `0.0.204` |
 | Ny personlig OAuth-innlogging/MFA | Utestet | Eksisterende forbindelse ble gjenbrukt; ingen ny OAuth-flyt |
-| Faktisk GitHub-import og Sync now | Utestet | Intet GitHub-repo/remote valgt; ingen workspace-import utført |
+| Faktisk GitHub-import og Sync now | Utestet | Offentlig repo `SveinT83/tactical-rmm-plugin` er opprettet og pushet; ingen workspace-import utført |
 | Apprettigheter og deling med arbeidsområdet | Utestet | Eksisterende plugin har scope USER; appens arbeidsområdetilgang er ikke bekreftet |
 | ChatGPT i nettleseren | Utestet | Ingen faktisk nettleserinstallasjon eller datakall fra nettleser |
 | Personlig isolasjon med flere brukere | Utestet | Ingen egne testidentiteter tilgjengelig; én brukers test beviser ikke isolasjon |
@@ -65,4 +65,4 @@ MCP-utviklingschatten ble funnet på Windows-verten og lest uten kommandoresulta
 
 ## Gjenværende akseptanse
 
-Velg GitHub-destinasjon og gjennomgå kilde før push. Administrator må bekrefte gjenbrukbar arbeidsområdetilgang til appen, gjeldende rutine for personlig nøkkelkobling, importresultat og reell nettleserstøtte. Test deretter med egne identiteter med forskjellige rettigheter. Skill, katalog og serverens faktiske tilgangskontroller må alle kontrolleres før bred bruk. Ingen produksjons-MCP, OAuth-klient eller eksisterende plugins deling er endret.
+GitHub-repoet [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin) er opprettet offentlig og pushet etter eierens uttrykkelige valg 15. november 2026. Administrator må bekrefte gjenbrukbar arbeidsområdetilgang til appen, gjeldende rutine for personlig nøkkelkobling, importresultat og reell nettleserstøtte. Test deretter med egne identiteter med forskjellige rettigheter. Skill, katalog og serverens faktiske tilgangskontroller må alle kontrolleres før bred bruk. Ingen produksjons-MCP, OAuth-klient eller eksisterende plugins deling er endret.
