@@ -1,0 +1,289 @@
+{
+  "date": "2026-11-14",
+  "source": "Existing personal app; read-only API-catalog searches. No customer actions.",
+  "command": {
+    "endpoint_id": "agents.cmd.agents",
+    "example_params": {
+      "agent_id": "<target-agent-id>",
+      "cmd": "hostname",
+      "custom_shell": "/bin/bash",
+      "run_as_user": false,
+      "shell": "custom",
+      "timeout": 15
+    },
+    "method": "POST",
+    "params_schema": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "shell": {
+                "const": "custom"
+              }
+            },
+            "required": [
+              "shell"
+            ]
+          },
+          "then": {
+            "required": [
+              "custom_shell"
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "agent_id": {
+          "description": "Target agent ID (path parameter).",
+          "minLength": 1,
+          "pattern": "\\S",
+          "type": "string"
+        },
+        "cmd": {
+          "description": "Command to execute. May contain secrets; never include in diagnostics.",
+          "minLength": 1,
+          "pattern": "\\S",
+          "type": "string"
+        },
+        "custom_shell": {
+          "description": "Required when shell=custom, e.g. /bin/bash.",
+          "minLength": 1,
+          "pattern": "\\S",
+          "type": "string"
+        },
+        "run_as_user": {
+          "description": "Explicit execution-context choice. true runs as the logged-in user; false uses the agent service context. No default is selected.",
+          "type": "boolean"
+        },
+        "shell": {
+          "description": "Shell supported by the target agent; use custom with custom_shell for an explicit shell path.",
+          "minLength": 1,
+          "pattern": "\\S",
+          "type": "string"
+        },
+        "timeout": {
+          "description": "Timeout in seconds.",
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "agent_id",
+        "cmd",
+        "shell",
+        "timeout",
+        "run_as_user"
+      ],
+      "type": "object"
+    },
+    "path": "/agents/{agent_id}/cmd/",
+    "score": 7,
+    "summary": "Run an agent command: POST /agents/{agent_id}/cmd/. JSON params: agent_id, cmd, shell, timeout, run_as_user; custom_shell when shell=custom."
+  },
+  "samples": [
+    {
+      "query": "client site",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "clients.clients-sites",
+            "method": "GET",
+            "path": "/clients/sites/",
+            "score": 2,
+            "summary": "GET /clients/sites/"
+          },
+          {
+            "endpoint_id": "clients.clients-sites-2",
+            "method": "POST",
+            "path": "/clients/sites/",
+            "score": 2,
+            "summary": "POST /clients/sites/"
+          }
+        ]
+      }
+    },
+    {
+      "query": "checks",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "automation.automation-checks",
+            "method": "GET",
+            "path": "/automation/checks/{check}/status/",
+            "score": 3,
+            "summary": "GET /automation/checks/{check}/status/"
+          },
+          {
+            "endpoint_id": "agents.checks.agents",
+            "method": "GET",
+            "path": "/agents/{agent_id}/checks/",
+            "score": 2,
+            "summary": "GET /agents/{agent_id}/checks/"
+          }
+        ]
+      }
+    },
+    {
+      "query": "tasks",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "automation.automation-tasks",
+            "method": "GET",
+            "path": "/automation/tasks/{task}/run/",
+            "score": 3,
+            "summary": "GET /automation/tasks/{task}/run/"
+          },
+          {
+            "endpoint_id": "automation.automation-tasks-2",
+            "method": "POST",
+            "path": "/automation/tasks/{task}/run/",
+            "score": 3,
+            "summary": "POST /automation/tasks/{task}/run/"
+          }
+        ]
+      }
+    },
+    {
+      "query": "patches",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "accounts.accounts-users-8",
+            "method": "PATCH",
+            "path": "/accounts/users/ui/",
+            "score": 1,
+            "summary": "PATCH /accounts/users/ui/"
+          },
+          {
+            "endpoint_id": "agents.reboot.agents",
+            "method": "PATCH",
+            "path": "/agents/{agent_id}/reboot/",
+            "score": 1,
+            "summary": "PATCH /agents/{agent_id}/reboot/"
+          }
+        ]
+      }
+    },
+    {
+      "query": "scripts",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "scripts.scripts",
+            "method": "GET",
+            "path": "/scripts/",
+            "score": 2,
+            "summary": "GET /scripts/"
+          },
+          {
+            "endpoint_id": "scripts.scripts-endpoint",
+            "method": "POST",
+            "path": "/scripts/",
+            "score": 2,
+            "summary": "POST /scripts/"
+          }
+        ]
+      }
+    },
+    {
+      "query": "alerts",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "alerts.alerts",
+            "method": "PATCH",
+            "path": "/alerts/",
+            "score": 2,
+            "summary": "PATCH /alerts/"
+          },
+          {
+            "endpoint_id": "alerts.alerts-bulk",
+            "method": "POST",
+            "path": "/alerts/bulk/",
+            "score": 2,
+            "summary": "POST /alerts/bulk/"
+          }
+        ]
+      }
+    },
+    {
+      "query": "winupdate",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "winupdate.winupdate",
+            "method": "GET",
+            "path": "/winupdate/{agent_id}/",
+            "score": 2,
+            "summary": "GET /winupdate/{agent_id}/"
+          },
+          {
+            "endpoint_id": "winupdate.winupdate-pk",
+            "method": "PUT",
+            "path": "/winupdate/{pk}/",
+            "score": 2,
+            "summary": "PUT /winupdate/{pk}/"
+          }
+        ]
+      }
+    },
+    {
+      "query": "agents",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "agents.agents-agentid",
+            "method": "DELETE",
+            "path": "/agents/{agent_id}/",
+            "score": 3,
+            "summary": "DELETE /agents/{agent_id}/"
+          },
+          {
+            "endpoint_id": "agents.agents-agentid-2",
+            "method": "GET",
+            "path": "/agents/{agent_id}/",
+            "score": 3,
+            "summary": "GET /agents/{agent_id}/"
+          }
+        ]
+      }
+    },
+    {
+      "query": "runscript",
+      "data": {
+        "count": 2,
+        "results": [
+          {
+            "endpoint_id": "agents.runscript.agents",
+            "method": "GET",
+            "path": "/agents/{agent_id}/runscript/",
+            "score": 2,
+            "summary": "GET /agents/{agent_id}/runscript/"
+          },
+          {
+            "endpoint_id": "automation.automation-tasks",
+            "method": "GET",
+            "path": "/automation/tasks/{task}/run/",
+            "score": 1,
+            "summary": "GET /automation/tasks/{task}/run/"
+          }
+        ]
+      }
+    }
+  ],
+  "notes": [
+    "Representative metadata, not a complete endpoint catalog.",
+    "One initial alerts catalog search returned internal error; a bounded read-only retry succeeded.",
+    "GET /automation/tasks/{task}/run/ and GET /agents/{agent_id}/runscript/ can perform actions; never use as connection probes.",
+    "Most sampled endpoints did not include params_schema. Do not infer required parameters."
+  ]
+}

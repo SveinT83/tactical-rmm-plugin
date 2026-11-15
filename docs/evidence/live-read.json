@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-14",
+  "connection": "Existing personal Tactical RMM app",
+  "source_plugin_id": "plugin_asdk_app_6af232dfb75c81919191e1ab5b5fd9c0",
+  "app_id": "asdk_app_6af232dfb75c81919191e1ab5b5fd9c0",
+  "catalog_discovery": { "query": "version", "limit": 3 },
+  "call": { "endpoint_id": "core.core-version", "params": {} },
+  "observed_method": "GET",
+  "observed_path": "/core/version/",
+  "result": "0.0.204",
+  "is_error": false,
+  "customer_data_lists_retrieved": false,
+  "customer_machine_actions_performed": false,
+  "new_oauth_flow_tested": false,
+  "server_key_selection_source_audited": false,
+  "multi_user_isolation_tested": false,
+  "workspace_import_tested": false,
+  "browser_tested": false
+}

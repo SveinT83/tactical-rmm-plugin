@@ -1,0 +1,25 @@
+{
+  "name": "tactical-rmm",
+  "version": "1.2.0",
+  "description": "Bruk Tactical RMM med personlig Keycloak-innlogging og egne Tactical-rettigheter.",
+  "author": {
+    "name": "Trønder Data"
+  },
+  "skills": "./skills/",
+  "apps": "./.app.json",
+  "interface": {
+    "displayName": "Tactical RMM",
+    "shortDescription": "Drift med personlig tilgang",
+    "longDescription": "Finn kunder, lokasjoner og maskiner og utfør bestilte driftshandlinger med personlig Tactical-tilgang. Inneholder oppsettsskill for SSO og bekreftede setup-lenker, samt skill for kommende serverstyrt selvbetjening og management-administrasjon. Faktiske serverfunksjoner og tilgangskontroller gjelder.",
+    "developerName": "Trønder Data",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": "Hjelp meg med Tactical RMM. Finn riktig kunde, lokasjon og maskin før du utfører bestillingen.",
+    "logo": "./assets/tactical-rmm.png",
+    "composerIcon": "./assets/tactical-rmm.png"
+  },
+  "onboardingSkill": "./skills/tactical-rmm-setup/SKILL.md"
+}

@@ -1,0 +1,26 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+auth.json
+credentials*.json
+secrets*
+.codex/
+.local/
+*.local.*
+# Development and generated artifacts
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+dist/
+build/
+node_modules/
+*.log
+*.zip
+*.tar.gz
+.DS_Store

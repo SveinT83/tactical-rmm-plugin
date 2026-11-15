@@ -1,0 +1,6 @@
+interface:
+  display_name: Tactical RMM
+  short_description: Drift med personlig tilgang
+  default_prompt: Hjelp meg med Tactical RMM og kontroller riktig mål før handling.
+policy:
+  allow_implicit_invocation: true

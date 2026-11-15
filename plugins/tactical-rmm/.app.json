@@ -1,0 +1,8 @@
+{
+  "apps": {
+    "tactical-rmm": {
+      "id": "asdk_app_6af232dfb75c81919191e1ab5b5fd9c0",
+      "required": true
+    }
+  }
+}

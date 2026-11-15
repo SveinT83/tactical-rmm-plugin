@@ -1,0 +1,116 @@
+{
+  "checked_at_utc": "2026-11-14T23:05:29.307429+00:00",
+  "kind": "public-metadata-only",
+  "resource": {
+    "authorization_servers": [
+      "https://auth.tronderdata.no/realms/tronderdata"
+    ],
+    "bearer_methods_supported": [
+      "header"
+    ],
+    "resource": "https://tactical-mcp.tronderdata.no/chatgpt/mcp",
+    "scopes_supported": [
+      "tactical-rmm"
+    ]
+  },
+  "oidc": {
+    "issuer": "https://auth.tronderdata.no/realms/tronderdata",
+    "authorization_endpoint": "https://auth.tronderdata.no/realms/tronderdata/protocol/openid-connect/auth",
+    "token_endpoint": "https://auth.tronderdata.no/realms/tronderdata/protocol/openid-connect/token",
+    "code_challenge_methods_supported": [
+      "plain",
+      "S256"
+    ],
+    "token_endpoint_auth_methods_supported": [
+      "private_key_jwt",
+      "client_secret_basic",
+      "client_secret_post",
+      "tls_client_auth",
+      "client_secret_jwt"
+    ],
+    "authorization_response_iss_parameter_supported": true
+  },
+  "server": {
+    "name": "Datanora Tactical RMM",
+    "version": "0.2.8-command-validation"
+  },
+  "tools": [
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "tactical-rmm"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "description": "Execute one tactical-rmm API endpoint by its endpoint_id (from tactical-rmm_search). Follow its params_schema, including conditional requirements. Agent commands require explicit run_as_user (boolean); never infer the execution context. Failed writes are not automatically retried; their outcome may be unknown.",
+      "inputSchema": {
+        "properties": {
+          "endpoint_id": {
+            "description": "Endpoint identifier returned by tactical-rmm_search (e.g., \"users.list\").",
+            "type": "string"
+          },
+          "params": {
+            "description": "Parameters for the endpoint. Path placeholders match by name; remaining entries become query string on GET/DELETE or JSON body on POST/PUT/PATCH.",
+            "properties": {},
+            "type": "object"
+          }
+        },
+        "required": [
+          "endpoint_id"
+        ],
+        "type": "object"
+      },
+      "name": "tactical-rmm_execute"
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "tactical-rmm"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "description": "Search the tactical-rmm API for endpoints matching a natural-language query. Returns ranked endpoint metadata, including params_schema and example_params where available. Call this first and follow the selected endpoint's required fields and types.",
+      "inputSchema": {
+        "properties": {
+          "limit": {
+            "description": "Max endpoints to return (default 10).",
+            "type": "number"
+          },
+          "query": {
+            "description": "Natural-language description of what you want to do.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "name": "tactical-rmm_search"
+    }
+  ],
+  "new_tools_requiring_review": [],
+  "oauth_login_tested": false,
+  "personal_isolation_tested": false,
+  "browser_tested": false
+}

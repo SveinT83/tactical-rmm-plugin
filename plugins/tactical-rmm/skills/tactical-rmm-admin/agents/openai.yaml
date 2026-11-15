@@ -1,0 +1,6 @@
+interface:
+  display_name: Tactical RMM
+  short_description: Administrer personlig tilgang
+  default_prompt: Opprett eller forny en brukers Tactical-tilgang gjennom MCP uten at nøkkelverdien går gjennom chatten.
+policy:
+  allow_implicit_invocation: true

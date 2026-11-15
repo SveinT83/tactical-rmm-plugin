@@ -1,0 +1,6 @@
+interface:
+  display_name: Tactical RMM
+  short_description: Kom i gang med SSO og tilgang
+  default_prompt: Kontroller min Tactical RMM-tilkobling og vis en bekreftet setup-lenke hvis personlig tilgang mangler.
+policy:
+  allow_implicit_invocation: true

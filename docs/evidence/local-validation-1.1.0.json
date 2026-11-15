@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-14",
+  "package": "tactical-rmm",
+  "display_name": "Tactical RMM",
+  "version": "1.1.0",
+  "manifest_schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "validator": "passed",
+  "unit_tests": {
+    "command": ".venv/bin/python -m unittest discover -s tests -v",
+    "passed": 14,
+    "failed": 0
+  },
+  "secret_scan": {
+    "result": "passed",
+    "scope": [
+      "repository source",
+      "tracked files",
+      "Git index",
+      "ZIP members"
+    ],
+    "limitation": "Pattern-based scan; no claim of exhaustive secret detection."
+  },
+  "archive": {
+    "path": "dist/tactical-rmm-1.1.0.zip",
+    "files": 12,
+    "single_plugin": true,
+    "hidden_files_included": true,
+    "read_back_verified": true,
+    "deterministic_build_tested": true,
+    "sha256": "e5bdab16888b08c074c2f45d4a1e5e6d9836037b783bc96503e2cdac17eb34cc"
+  },
+  "codex_cli": {
+    "version": "0.167.0",
+    "temporary_marketplace_registration": "passed",
+    "local_installation": "passed",
+    "listed_installed_enabled_version": "1.1.0",
+    "installed_files_match_source": 12,
+    "temporary_installation_removed": true,
+    "temporary_marketplace_removed": true,
+    "new_chat_skill_execution_tested": false,
+    "discoverable_skill_folders": [
+      "tactical-rmm",
+      "tactical-rmm-admin"
+    ]
+  },
+  "error_fixtures": {
+    "cases": 7,
+    "assessment": "manual local review against skill instructions",
+    "live_error_injection": false,
+    "automated_model_behavior_evaluation": false
+  },
+  "workspace_import_tested": false,
+  "browser_tested": false,
+  "new_oauth_login_tested": false,
+  "multi_user_isolation_tested": false,
+  "skills": 2,
+  "management_backend": {
+    "status": "under development",
+    "implemented_by_package": false,
+    "admin_tools_verified": false,
+    "admin_url_verified": false,
+    "management_authorization_tested": false,
+    "key_creation_linking_rotation_tested": false,
+    "raw_key_material_retrieved": false
+  },
+  "historical_live_evidence": "docs/evidence/live-read.json (existing personal app, before administration skill)"
+}

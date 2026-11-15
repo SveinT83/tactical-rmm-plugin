@@ -1,0 +1,24 @@
+{
+  "purpose": "Referanse for administrator og metadata-probe; ikke et installasjonsmanifest eller en ny appregistrering.",
+  "mcpUrl": "https://tactical-mcp.tronderdata.no/chatgpt/mcp",
+  "protectedResourceMetadataUrl": "https://tactical-mcp.tronderdata.no/.well-known/oauth-protected-resource",
+  "issuer": "https://auth.tronderdata.no/realms/tronderdata",
+  "oidcConfigurationUrl": "https://auth.tronderdata.no/realms/tronderdata/.well-known/openid-configuration",
+  "auth": {
+    "type": "oauth",
+    "client": {
+      "mode": "provided",
+      "clientId": "tactical-chatgpt"
+    },
+    "baseScopes": [
+      "tactical-rmm"
+    ]
+  },
+  "tokenEndpointAuthMethod": "Ikke klientverifisert; behold eksisterende appkonfigurasjon.",
+  "keyAdministration": "Under utvikling. Kommende management-verktøy skal opprette/hente nøkkel i Tactical og lagre på målbrukeren i MCP direkte på serversiden; nøkkelverdien skal ikke inn i tool-input, tool-output eller chat. Verktøy, admin-URL og administrasjonsrutine er ikke verifisert.",
+  "setupUrl": null,
+  "trustedSetupOrigins": [
+    "https://tactical-mcp.tronderdata.no"
+  ],
+  "setupStatus": "MCP-utviklingschat rapporterer selvbetjening og management-administrasjon under utvikling. Faktisk setup-sti og statusskjema er ikke verifisert mot kjørende server."
+}
