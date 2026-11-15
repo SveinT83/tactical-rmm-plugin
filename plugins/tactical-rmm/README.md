@@ -1,17 +1,17 @@
 # Tactical RMM
 
-Versjon 1.2.0 · Trønder Data · teknisk navn `tactical-rmm`.
+Versjon 1.3.0-rc.1 · Trønder Data · teknisk navn `tactical-rmm`.
 
 Pluginen inneholder norske skills for oppsett, drift og personlig tilgang, samt en referanse til eksisterende Tactical RMM-app. Den bruker personlig Keycloak-innlogging, eventuell MFA og egne Tactical-rettigheter. Gi en avgrenset bestilling med kunde, lokasjon og maskin. Skillene oppdager faktiske verktøy og parameterkrav, respekterer eksisterende godkjenningsregler og rapporterer faktisk resultat.
 
-**Utrullingsstatus:** Arbeidsområdets tilgang til appen, faktisk GitHub-import og ChatGPT-nettleserbruk er utestet. En `.app.json`-referanse beviser ikke nettleserstøtte. Administrasjonsgrensesnittet for personlige nøkkelkoblinger er under utvikling; ingen utrulling er bekreftet.
+**Utrullingsstatus:** Arbeidsområdets tilgang til appen, faktisk GitHub-import og ChatGPT-nettleserbruk er utestet. En `.app.json`-referanse beviser ikke nettleserstøtte. MCP 0.3.2 annonserer tilgangsverktøyene, og setup-siden `/admin/` er bekreftet. Innlogget funksjon, rolleisolasjon og faktisk nøkkellivssyklus er ikke testet fra denne chatten.
 
 - [Arbeidsområde, GitHub-import, nettlesertest, Sync now og tilbakeføring](docs/WORKSPACE.md)
 - [OAuth og administratorens nøkkelkobling](docs/ADMIN.md)
 - [Norsk driftsskill](skills/tactical-rmm/SKILL.md)
 - [Oppsettsskill](skills/tactical-rmm-setup/SKILL.md), registrert som onboarding: SSO og bekreftede setup-lenker uten nøkkelverdier i chatten.
 - [Administrasjonsskill](skills/tactical-rmm-admin/SKILL.md) for kommende management-verktøy: bestill opprettelse og kobling av personlig tilgang uten at nøkkelverdien går gjennom chatten.
-- [Krav til kommende MCP-administrasjon](docs/MCP-ADMIN-CONTRACT.md); funksjonen er under utvikling og ikke live-testet.
+- [Krav til kommende MCP-administrasjon](docs/MCP-ADMIN-CONTRACT.md); katalog og kilde er gjennomgått, mens innlogget funksjon gjenstår å teste.
 - [Original Tactical RMM-logo](assets/README.md), brukt som pluginlogo og ikon.
 
 ## Lokal utvikling fra kilde

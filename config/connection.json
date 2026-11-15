@@ -8,17 +8,38 @@
     "type": "oauth",
     "client": {
       "mode": "provided",
-      "clientId": "tactical-chatgpt"
+      "clientId": "tactical-chatgpt",
+      "tokenEndpointAuthMethod": "client_secret_basic"
     },
     "baseScopes": [
       "tactical-rmm"
     ]
   },
-  "tokenEndpointAuthMethod": "Ikke klientverifisert; behold eksisterende appkonfigurasjon.",
-  "keyAdministration": "Under utvikling. Kommende management-verktøy skal opprette/hente nøkkel i Tactical og lagre på målbrukeren i MCP direkte på serversiden; nøkkelverdien skal ikke inn i tool-input, tool-output eller chat. Verktøy, admin-URL og administrasjonsrutine er ikke verifisert.",
-  "setupUrl": null,
+  "tokenEndpointAuthMethod": "client_secret_basic",
+  "keyAdministration": "Seks access-verktøy observert i live-katalogen på 0.3.2-admin-repair. Nøkkelverdier håndteres på serveren. Innlogget funksjon og flerbrukerisolasjon må fortsatt testes.",
+  "setupUrl": "https://tactical-mcp.tronderdata.no/admin/",
   "trustedSetupOrigins": [
     "https://tactical-mcp.tronderdata.no"
   ],
-  "setupStatus": "MCP-utviklingschat rapporterer selvbetjening og management-administrasjon under utvikling. Faktisk setup-sti og statusskjema er ikke verifisert mot kjørende server."
+  "setupStatus": "Bekreftet i MCP-kildedokumentasjon og ved uautentisert HTTPS-lesing av innloggingssiden. Personlig SSO og tilgangsstatus er ikke testet fra denne chatten.",
+  "sourceEvidence": {
+    "repository": "SveinT83/Tactical-RMM-MCP",
+    "commit": "66b31ef1853f157dc71c887f80c6d73823163fef",
+    "files": [
+      "ADMIN.md",
+      "CHATGPT-PLUGIN-INSTRUCTIONS.md",
+      "cli/internal/mcp/access_admin.go",
+      "cli/internal/admin/access.go"
+    ]
+  },
+  "reviewedToolNames": [
+    "tactical-rmm_search",
+    "tactical-rmm_execute",
+    "tactical-rmm_access_users",
+    "tactical-rmm_access_keys",
+    "tactical-rmm_access_assign",
+    "tactical-rmm_access_create",
+    "tactical-rmm_access_rotate",
+    "tactical-rmm_access_remove"
+  ]
 }

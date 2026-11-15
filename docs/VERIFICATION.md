@@ -1,5 +1,7 @@
 # Verifikasjon – oppdatert 15. november 2026
 
+**Historikk for 1.2.0:** Rapporten nedenfor gjelder den tidligere pakken. Den nyere testkandidaten `1.3.0-rc.1` på `test/mcp-0.3.2` er beskrevet i [før-lanseringsrapporten](PRELAUNCH.md), med faktisk MCP 0.3.2-katalog og bekreftet setup-adresse. Ikke bruk historiske formuleringer om ukjent setup-URL som gjeldende status for testkandidaten.
+
 ## Separate testnivåer
 
 | Nivå | Resultat | Avgrensning |

@@ -1,5 +1,7 @@
 # MCP: undersøkt status og hva som må bekreftes
 
+**Historisk notat for 1.2.0.** Nyere kilde- og live-kontroll av MCP 0.3.2 finnes i [PRELAUNCH.md](PRELAUNCH.md). Setup-URL og tilgangskatalog er nå bekreftet for testkandidaten. Full brukerfunksjonsdekning er fortsatt utestet; se [akseptansemålet](FUNCTIONAL-COVERAGE.md).
+
 Pluginpakke: Tactical RMM 1.2.0. Oppdatert 15. november 2026, Europe/Oslo.
 
 ## Hva som er undersøkt

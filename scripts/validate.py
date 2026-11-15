@@ -150,9 +150,10 @@ def validate(root=ROOT):
         require(not path.is_symlink(), "Package contains symlink")
         require(not any(p in IGNORED for p in path.relative_to(package).parts), "Generated/local file in package")
     connection = read_json(root / "config/connection.json")
-    require(connection["auth"] == {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt"}, "baseScopes": ["tactical-rmm"]}, "OAuth contract changed")
+    require(connection["auth"] == {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "client_secret_basic"}, "baseScopes": ["tactical-rmm"]}, "OAuth contract changed")
     require(connection["mcpUrl"] == "https://tactical-mcp.tronderdata.no/chatgpt/mcp", "Wrong MCP endpoint")
     require(connection["issuer"] == "https://auth.tronderdata.no/realms/tronderdata", "Wrong issuer")
+    require(connection["setupUrl"] == "https://tactical-mcp.tronderdata.no/admin/", "Wrong verified setup URL")
     files = scan_repo(root)
     return {"package": str(package.relative_to(root)), "version": manifest["version"], "skills": len(skill_paths), "scanned_files": files}
 

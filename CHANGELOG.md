@@ -1,5 +1,14 @@
 # Endringslogg
 
+## 1.3.0-rc.1 – 2026-11-15
+
+- Testkandidat på egen gren for MCP `0.3.2-admin-repair`; ingen automatisk lansering til `main`.
+- Faktiske access-verktøy og betingede parametere dokumentert, inkludert `tactical_user_id` ved flere kontoer med samme e-post.
+- Bekreftet setup-URL og dokumentert førstegangskobling for vanlige brukere versus management.
+- Skillene unngår å tolke generell 403 som manglende kobling eller utløpt innlogging uten bekreftet status.
+- Lesende før-lanseringsskript med kontroller uten legitimasjon, samt tester av skriptets skrive- og svarbegrensninger.
+- Full funksjonsdekning innen hver brukers Tactical-rettigheter er akseptansemålet; dette er ennå ikke dokumentert eller godkjent.
+
 ## 1.2.0 – 2026-11-15
 
 - Original Tactical RMM-logo fra offisielt repo, med kilde og sjekksum, lagt til som logo og composer-ikon.

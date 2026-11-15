@@ -1,8 +1,10 @@
 # Tactical RMM
 
-Pluginpakke fra **Trønder Data**, versjon **1.2.0**, med norsk oppsetts-, drifts- og tilgangsskill og gjenbruk av eksisterende Tactical RMM-app. Teknisk navn er `tactical-rmm`.
+Pluginpakke fra **Trønder Data**, versjon **1.3.0-rc.1**, med norsk oppsetts-, drifts- og tilgangsskill og gjenbruk av eksisterende Tactical RMM-app. Teknisk navn er `tactical-rmm`.
 
 Pakken er laget for import gjennom arbeidsområdets GitHub-marketplace. Den oppretter ingen MCP-server, Keycloak-klient eller ny app. Endepunktet er `https://tactical-mcp.tronderdata.no/chatgpt/mcp`, og teknikeren bruker egen Keycloak-innlogging og egne Tactical-rettigheter.
+
+Testkandidaten utvikles på grenen `test/mcp-0.3.2`; `main` beholdes som 1.2.0 frem til gjennomgang. Før-lanseringstesten er ikke en lanseringsgodkjenning.
 
 Offentlig kilde-repo: [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin).
 Ved arbeidsområdeimport brukes **Source** `https://github.com/SveinT83/tactical-rmm-plugin`, tom **Path** og **Branch** `main`. Marketplace-filen er `.agents/plugins/marketplace.json` i repoets rotstruktur. Import og nettleserbruk er fortsatt ikke testet.
@@ -45,7 +47,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/build.py
 ```
 
-Arkiv: `dist/tactical-rmm-1.2.0.zip`, med separat SHA-256-fil. Bygget validerer kilde og leser tilbake arkivet. Skjemavalideringen bruker den medfølgende offisielle schema-filen; nettverk er ikke nødvendig etter installasjon av utviklingsavhengighetene. Hemmelighetsskanningen dekker kildefiler, Git-sporede filer og innholdet i Git-indeksen. Den er regelbasert og erstatter ikke gjennomgang før push.
+Arkiv: `dist/tactical-rmm-1.3.0-rc.1.zip`, med separat SHA-256-fil. Bygget validerer kilde og leser tilbake arkivet. Skjemavalideringen bruker den medfølgende offisielle schema-filen; nettverk er ikke nødvendig etter installasjon av utviklingsavhengighetene. Hemmelighetsskanningen dekker kildefiler, Git-sporede filer og innholdet i Git-indeksen. Den er regelbasert og erstatter ikke gjennomgang før push.
 
 Valgfri, lesende offentlig metadata-test:
 
@@ -85,14 +87,20 @@ Pluginpakken distribuerer instruksjoner og appreferanse. MCP-serverens kode og n
 
 Tilgangsskillen forbereder bestillinger om egen tilgang og management-administrasjon av andre, som «Opprett og koble Tactical-tilgang for Ola». MCP må kontrollere egen identitet ved selvbetjening og `management` fra betrodd SSO-identitet ved administrasjon av andre, opprette/hente nøkkelen i Tactical og lagre den på riktig bruker direkte på serversiden. Verken tool-input, tool-output eller samtalen skal inneholde selve nøkkelverdien. Chatten mottar bare status og eventuelt en SSO-beskyttet administrasjonslenke.
 
-Dette er under utvikling. Ingen administrasjonsverktøy eller admin-URL er verifisert, og skillen implementerer ingen serverfunksjon. [Serverkravene](plugins/tactical-rmm/docs/MCP-ADMIN-CONTRACT.md) beskriver hva som må leveres og testes før flyten kan brukes. Ingen aktive brukere eller nøkler er endret.
+MCP 0.3.2 annonserer de seks faktiske tilgangsverktøyene, og den beskyttede adressen `https://tactical-mcp.tronderdata.no/admin/` er bekreftet i kilde og ved HTTPS-lesing av innloggingssiden. Innlogget funksjon og nøkkellivssyklus er ikke testet fra denne chatten. Skillen implementerer ingen serverfunksjon. [Serverkravene](plugins/tactical-rmm/docs/MCP-ADMIN-CONTRACT.md) beskriver hva som må leveres og testes før flyten kan brukes. Ingen aktive brukere eller nøkler er endret.
 
 ## Førstegangsoppsett og logo
 
-`onboardingSkill` er satt i begge manifester og peker til oppsettsskillen. Den forklarer SSO, kontrollerer faktisk tilgjengelige statusfunksjoner og viser bare en verifisert, beskyttet setup-URL ved manglende personlig kobling. Ingen setup-sti er gjettet. Verten styrer når oppsett og OAuth-dialog startes; automatisk oppstart og nettleserstøtte må testes i riktig arbeidsområde.
+`onboardingSkill` er satt i begge manifester og peker til oppsettsskillen. Den forklarer SSO, kontrollerer faktisk tilgjengelige statusfunksjoner og viser bare en verifisert, beskyttet setup-URL ved manglende personlig kobling. Den kildebekreftede setup-stien er `/admin/`. Verten styrer når oppsett og OAuth-dialog startes; automatisk oppstart og nettleserstøtte må testes i riktig arbeidsområde.
 
 Original Tactical RMM-logo er lagt inn uendret som både `logo` og `composerIcon`, med [kilde og sjekksum](plugins/tactical-rmm/assets/README.md). Se [MCP-status og konkret videre arbeid](docs/MCP-HANDOFF.md) for det som er undersøkt og det MCP må bekrefte.
 
 ## Kilder
 
 Kontrollert 14. november 2026: [OpenAI-pakkeformat](https://developers.openai.com/plugins/build/plugins), [GitHub-import og synkronisering](https://learn.chatgpt.com/docs/enterprise/plugin-management), [OAuth](https://developers.openai.com/plugins/build/auth), [Agent Plugins-schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json). Prosjektspesifikke observasjoner og begrensninger finnes i [verifikasjonsrapporten](docs/VERIFICATION.md).
+
+## Før lansering
+
+Kjør `.venv/bin/python scripts/prelaunch.py --save` for pakke-, katalog-, innloggingsside- og OAuth-avvisningstester. Skriptet aksepterer ingen legitimasjon, gjør ingen skrivekall og leser ingen svarbody fra tilgangsverktøyene. Det beviser ikke personlig SSO eller rettighetsisolasjon. Se [før-lanseringstesten](docs/PRELAUNCH.md) og [funksjonsdekningen](docs/FUNCTIONAL-COVERAGE.md).
+
+Funksjonsmålet er at enhver bruker skal kunne utføre alt vedkommende har rettigheter til i Tactical RMM gjennom MCP. Hele funksjonsflaten må dokumenteres og testes; åtte MCP-verktøy og en generell API-katalog er ikke bevis på full dekning.
