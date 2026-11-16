@@ -25,8 +25,10 @@ def bind(receipt, version, root=ROOT):
     app_manifest = receipt["app_manifest"]
     require(set(app_manifest) == {"apps"} and len(app_manifest["apps"]) == 1, "Expected one registered MCP connection")
     app = next(iter(app_manifest["apps"].values()))
-    require(set(app) == {"id", "required"} and app["required"] is True, "Unexpected app mapping")
+    require("id" in app and set(app) <= {"id", "required"}
+            and app.get("required", True) is True, "Unexpected app mapping")
     app_id = app["id"]
+    app = {"id": app_id, "required": True}
     require(isinstance(app_id, str) and bool(APP_ID.fullmatch(app_id)) and app_id != DELETED_APP_ID, "Invalid or deleted app ID")
     require(receipt["plugin_id"] == "plugin_" + app_id, "Registration and app ID differ")
     current = read_json(root / "plugins/tactical-rmm/.codex-plugin/plugin.json")

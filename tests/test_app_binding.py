@@ -22,7 +22,7 @@ def synthetic_receipt():
         "workspace_id": "c32d88fa-1324-44b1-9fce-9d7a166164a4",
         "mcp_url": "https://tactical-mcp.tronderdata.no/chatgpt/mcp",
         "app_manifest": {"apps": {"registered-connection": {
-            "id": "asdk_app_SyntheticBindingTest", "required": True,
+            "id": "asdk_app_SyntheticBindingTest",
         }}},
     }
 

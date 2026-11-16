@@ -136,7 +136,10 @@ def validate(root=ROOT):
         require(binding.get("mode") == "registered-app" and binding.get("app_id") == app["id"], "App differs from verified registration")
         receipt = binding.get("registration", {})
         original_apps = receipt.get("app_manifest", {}).get("apps", {})
-        require(len(original_apps) == 1 and next(iter(original_apps.values())) == app, "App mapping differs from registration receipt")
+        require(len(original_apps) == 1, "Expected one original app mapping")
+        original = next(iter(original_apps.values()))
+        require(set(original) <= {"id", "required"} and original.get("id") == app["id"]
+                and original.get("required", True) is True, "App mapping differs from registration receipt")
         require(receipt.get("mcp_url") == connection["mcpUrl"], "Registered app uses the wrong MCP")
         require(receipt.get("scope") == "WORKSPACE" and receipt.get("workspace_id") == "c32d88fa-1324-44b1-9fce-9d7a166164a4", "App is not in the target workspace")
         require(receipt.get("plugin_id") == "plugin_" + app["id"], "Registration identity mismatch")

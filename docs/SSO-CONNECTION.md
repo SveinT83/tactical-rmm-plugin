@@ -4,6 +4,15 @@ Innloggingen skal følge denne kjeden: **ChatGPT → Keycloak → MCP → Tactic
 Teknikeren skal bare installere pluginen og koble til sin egen jobbkonto.
 MCP håndterer personlig Tactical-tilgang på serveren.
 
+Aktiv BookStack-kobling ble kontrollert direkte med Plugin Creator 16. november
+2026: scope `WORKSPACE`, discoverability `LISTED`, arbeidsområde
+`c32d88fa-1324-44b1-9fce-9d7a166164a4`. GitHub-pakken inkluderer denne koblingen.
+Dette bekrefter sentral tilgjengelighet, ikke at hver bruker har logget inn.
+Tacticals tidligere registrering svarer fortsatt `Plugin not found`.
+Målet er samme installasjon med SSO gjennom inkludert kobling. Utgiveroppsett
+for intern distribusjon gjøres i arbeidsområdets administrasjon; det krever
+ikke en offentlig butikkoppføring i Developer Portal.
+
 «App» i `.app.json` er ChatGPTs registrerte MCP-kontotilkobling. Det er ikke
 en ny Tactical-applikasjon eller en ny server. BookStack-pakken bruker denne
 typen registrering. En rå MCP-deklarasjon i GitHub-pakken gir foreløpig ikke
