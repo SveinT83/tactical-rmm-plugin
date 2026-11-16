@@ -43,6 +43,7 @@ def probe():
         results[method] = result["result"]
     tools = results["tools/list"]["tools"]
     baseline_tools = {"tactical-rmm_search", "tactical-rmm_execute"}
+    reviewed_tools = set(config.get("reviewedToolNames", baseline_tools))
     tool_names = {t["name"] for t in tools}
     require(baseline_tools <= tool_names, "Baseline tools missing: review integration")
     require(not results["tools/list"].get("nextCursor"), "Paginated catalog: further discovery required")
@@ -56,7 +57,8 @@ def probe():
         "oidc": {k: oidc[k] for k in ["issuer", "authorization_endpoint", "token_endpoint", "code_challenge_methods_supported", "token_endpoint_auth_methods_supported", "authorization_response_iss_parameter_supported"] if k in oidc},
         "server": results["initialize"]["serverInfo"],
         "tools": tools,
-        "new_tools_requiring_review": sorted(tool_names - baseline_tools),
+        "new_tools_requiring_review": sorted(tool_names - reviewed_tools),
+        "reviewed_tools_missing_from_catalog": sorted(reviewed_tools - tool_names),
         "oauth_login_tested": False,
         "personal_isolation_tested": False,
         "browser_tested": False,

@@ -1,40 +1,33 @@
 # Tactical RMM
 
-Pluginpakke fra **Trønder Data**, versjon **1.2.0**, med norsk oppsetts-, drifts- og tilgangsskill og gjenbruk av eksisterende Tactical RMM-app. Teknisk navn er `tactical-rmm`.
+**Trønder Data · 1.3.0-rc.2 · testkandidat mot MCP 0.4.0**
 
-Pakken er laget for import gjennom arbeidsområdets GitHub-marketplace. Den oppretter ingen MCP-server, Keycloak-klient eller ny app. Endepunktet er `https://tactical-mcp.tronderdata.no/chatgpt/mcp`, og teknikeren bruker egen Keycloak-innlogging og egne Tactical-rettigheter.
+Selvstendig plugin med tre norske skills og direkte tilkobling til eksisterende `https://tactical-mcp.tronderdata.no/chatgpt/mcp`. Den slettede personlige ChatGPT-pluginen brukes ikke som avhengighet. Ingen ny MCP-server eller Keycloak-klient opprettes.
 
-Offentlig kilde-repo: [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin).
-Ved arbeidsområdeimport brukes **Source** `https://github.com/SveinT83/tactical-rmm-plugin`, tom **Path** og **Branch** `main`. Marketplace-filen er `.agents/plugins/marketplace.json` i repoets rotstruktur. Import og nettleserbruk er fortsatt ikke testet.
-
-**Status:** Lokal kilde og installasjonsarkiv er levert. Eksisterende personlig app er testet med ett avgrenset datakall. Tilgang til appen i arbeidsområdet, faktisk GitHub-import og ChatGPT-nettleserbruk er ikke verifisert. `.app.json` gir ikke i seg selv nettleserstøtte. Se [teststatus](docs/VERIFICATION.md) og [nettleser og arbeidsområde](plugins/tactical-rmm/docs/WORKSPACE.md).
+Repo: [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin). Kandidaten distribueres fra `main` for import i ChatGPT. Versjonen er fortsatt en testkandidat; personlig OAuth og nettleserflyt sluttkontrolleres ved installasjon.
 
 ## Innhold
 
-```text
-.agents/plugins/marketplace.json   # Marketplace for hele repoet
-plugins/tactical-rmm/
-  plugin.json                     # Agent Plugins 1.0, versjon og presentasjon
-  .codex-plugin/plugin.json       # Synkronisert kompatibilitetsmanifest
-  .app.json                       # Verifisert eksisterende app-ID
-  assets/                         # Original Tactical RMM-logo og kildehenvisning
-  README.md                       # Bruk og utvikling fra kilde
-  docs/                           # Arbeidsområde og administrator
-  skills/tactical-rmm/            # Norsk skill, referanse og agentmetadata
-  skills/tactical-rmm-admin/      # Kommende management-flyt uten rånøkler i chat
-  skills/tactical-rmm-setup/      # Onboarding, SSO og bekreftede setup-lenker
-config/connection.json            # Administratorreferanse, ikke ny tilkobling
-docs/                            # Bevis og teststatus
-schemas/                         # Offisiell manifest-JSON-schema for offline-test
-scripts/                         # Validering, offentlig metadata-probe og bygg
-tests/                           # Pakketester, kommando-skjema og syntetiske feilsvar
-```
+- `plugins/tactical-rmm/plugin.json`: portabel identitet, versjon, logo og onboarding.
+- `plugins/tactical-rmm/mcp.json`: eksisterende remote MCP og dokumentert OpenAI OAuth-konfigurasjon.
+- `.codex-plugin/plugin.json` og `.mcp.json` inne i pluginmappen: Codex-kompatibilitet for samme logiske tilkobling.
+- `skills/tactical-rmm-setup`, `skills/tactical-rmm` og `skills/tactical-rmm-admin`: oppsett, drift og personlig tilgang.
+- `.agents/plugins/marketplace.json`: repo-marketplace for arbeidsområdeimport.
+- `docs/`, `scripts/` og `tests/`: testbevis og utviklingsverktøy; ikke en ny server.
 
-`dist/` genereres lokalt og skal ikke spores i Git. ZIP-filen inneholder én plugin med skjulte kompatibilitetsfiler; marketplace-filen ligger i repoet og skal ikke ligge i pluginarkivet.
+Original Tactical RMM-logo følger pakken med kilde og sjekksum. Nøkler, token og OAuth-klienthemmelighet følger aldri kilde eller arkiv.
 
-## Lokal validering og bygging
+## Før installasjon
 
-Krever Python 3.10 eller nyere. Python er bare utviklingsverktøy; pluginen har ingen lokal server eller kjøretidsavhengighet.
+Administrator konfigurerer den eksisterende OAuth-klienten `tactical-chatgpt` og eventuell klienthemmelighet i vertens beskyttede oppsett. Pakken beskriver `provided` og `client_secret_basic`; den oppretter ikke en ny klient og kan ikke erstatte beskyttet hemmelighetskonfigurasjon. Teknikeren bruker deretter egen SSO/MFA og samtykke.
+
+Mangler personlig Tactical-kobling, viser skillen bekreftet forklaring og lenken `https://tactical-mcp.tronderdata.no/admin/`. Management kan klargjøre ansatte slik at de bare trenger SSO. Første nøkkel for en vanlig bruker registreres direkte på den beskyttede siden eller av management, aldri gjennom chatten.
+
+GitHub-import kan bli merket **Desktop only** selv med HTTPS MCP. Nettleserstøtte kan derfor ikke godkjennes fra en lokal test. [Installasjonsveiledningen](plugins/tactical-rmm/docs/WORKSPACE.md) beskriver arbeidsområdeimport, én gangs OAuth-oppsett og nødvendig støttet webflyt hvis importen blir Desktop only. Ingen ChatGPT-opplasting er gjort av dette prosjektet.
+
+## Tester og bygg
+
+Python 3.10+ brukes bare til utvikling:
 
 ```bash
 cd '/var/Projects/plugin Tactical RMM'
@@ -43,23 +36,14 @@ python3 -m venv .venv
 .venv/bin/python scripts/validate.py
 .venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python scripts/build.py
+.venv/bin/python scripts/prelaunch.py --save
 ```
 
-Arkiv: `dist/tactical-rmm-1.2.0.zip`, med separat SHA-256-fil. Bygget validerer kilde og leser tilbake arkivet. Skjemavalideringen bruker den medfølgende offisielle schema-filen; nettverk er ikke nødvendig etter installasjon av utviklingsavhengighetene. Hemmelighetsskanningen dekker kildefiler, Git-sporede filer og innholdet i Git-indeksen. Den er regelbasert og erstatter ikke gjennomgang før push.
+Arkiv: `dist/tactical-rmm-1.3.0-rc.2.zip`, med SHA-256-fil. Det inneholder én plugin. Bygget leser arkivet tilbake og skanner kilde, Git-indeks og arkiv for kjente hemmelighetsmønstre.
 
-Valgfri, lesende offentlig metadata-test:
+[Schema-notatet](schemas/README.md) forklarer separat kontroll av portable transportfelt og OpenAIs dokumenterte OAuth-utvidelse. Ingen full ChatGPT-import eller personlig OAuth-flyt er påstått bestått av skjemakontroll.
 
-```bash
-.venv/bin/python scripts/probe.py
-# Oppdater det versjonerte metadataøyeblikksbildet etter gjennomgang:
-.venv/bin/python scripts/probe.py --save
-```
-
-Proben leser OAuth-discovery, MCP-initialisering og `tools/list`. Den gjør ingen `tools/call`, krever ingen nøkler/token og tester ikke personlig OAuth. Nye verktøy listes som krav om gjennomgang; manglende basisverktøy eller avvikende OAuth-metadata gir feil. Nye funksjoner blir ikke godkjent automatisk av proben.
-
-## Test med Codex
-
-Fra en terminal på samme vert som Codex-klienten:
+Lokal Codex-installasjon kan gjøres med:
 
 ```bash
 codex plugin marketplace add '/var/Projects/plugin Tactical RMM' --json
@@ -67,32 +51,20 @@ codex plugin add tactical-rmm@tronder-data-tactical-rmm --json
 codex plugin list --marketplace tronder-data-tactical-rmm --json
 ```
 
-CLI-kommandoene er kontrollert mot `codex-cli 0.167.0`. Hvis den lokale klienten har en annen versjon, les `codex plugin --help`. Test i en ny chat, velg Tactical RMM og kontroller at skillen og appverktøyene faktisk vises. En lokal pakkeinstallasjon beviser ikke at appen er tilgjengelig eller autentisert. Bruk vanlig beskyttet OAuth-flyt for samme bruker dersom verten ber om innlogging.
+Kontroller faktiske skills og MCP-verktøy i en ny chat. Ingen kundekommandoer, patching, restart eller nøkkelendringer brukes som generell tilkoblingstest. [Før-lanseringsrapporten](docs/PRELAUNCH.md) skiller lokale pakketester, isolerte serverkildetester, lesende live-kontroller og tester som fortsatt gjenstår.
 
-Start med «Finn endepunktet for Tactical-versjon, og les versjonen uten å gjøre endringer». Katalogen bekreftet `core.core-version` som GET `/core/version/` under leveransen, men finn det på nytt før bruk. Ikke kjør kommandoer, skript, restart eller patching som test. [Mocks og testgrenser](docs/VERIFICATION.md) beskriver feilsituasjonene.
+## Funksjonsdekning
 
-## Arbeidsområde, bruk og oppdateringer
+Skillene bruker de faktiske search/execute-verktøyene og de seks access-verktøyene, inkludert native body/query, filer, idempotens, kontovalg og strukturerte feil. Kildeinventaret er kontrollert: 328 operasjoner, 291 klassifiserte tekniker-REST-operasjoner og 37 begrunnede eksklusjoner. Registrert kontrakt betyr ikke at alle produksjonsoperasjoner eller brukerrettigheter er testet.
 
-1. Gjennomgå endringer og push til `main` i [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin). Repoet er offentlig etter eierens uttrykkelige valg, og lokal `origin` peker til dette repoet.
-2. En arbeidsområdeadministrator importerer repoet og kontrollerer apprettigheter etter [arbeidsområdedokumentasjonen](plugins/tactical-rmm/docs/WORKSPACE.md).
-3. Hver tekniker autentiserer sin egen konto. Administrator fullfører eventuell personlig nøkkelkobling på serversiden etter [administratordokumentasjonen](plugins/tactical-rmm/docs/ADMIN.md).
-4. Ved drift: finn riktig kunde, lokasjon og maskin, gi en avgrenset bestilling og kontroller rapportert resultat. Skillen følger vertens godkjenningsregler.
-5. Ved endring: oppdater versjon i begge manifester, endringslogg og relevante bevis; kjør tester og bygg før push. Bruk arbeidsområdets **Sync now**, les rapporten og kontroller ny versjon, skill og verktøy i en ny chat. [Oppdatering og tilbakeføring](plugins/tactical-rmm/docs/WORKSPACE.md) beskriver resten.
+Målet er at brukeren skal kunne gjøre alt vedkommende har rettigheter til i Tactical RMM. Interaktiv terminal, native livestrømmer og fjernskrivebord mangler fortsatt egne sesjonsintegrasjoner i MCP; dette er ikke skjult av en skill. Se [dekningsoversikten](docs/FUNCTIONAL-COVERAGE.md).
 
-Pluginpakken distribuerer instruksjoner og appreferanse. MCP-serverens kode og nøkkelkoblinger har separat drift og utrulling.
+## GitHub, oppdatering og tilbakeføring
 
-## Kommende administrasjon fra chat
+For import: Source `https://github.com/SveinT83/tactical-rmm-plugin`, tom Path og Branch `main`. Arbeidsområdeadministrator setter roller, installasjons- og autentiseringspolicy i ChatGPT.
 
-Tilgangsskillen forbereder bestillinger om egen tilgang og management-administrasjon av andre, som «Opprett og koble Tactical-tilgang for Ola». MCP må kontrollere egen identitet ved selvbetjening og `management` fra betrodd SSO-identitet ved administrasjon av andre, opprette/hente nøkkelen i Tactical og lagre den på riktig bruker direkte på serversiden. Verken tool-input, tool-output eller samtalen skal inneholde selve nøkkelverdien. Chatten mottar bare status og eventuelt en SSO-beskyttet administrasjonslenke.
+Oppdater begge manifester, konfigurasjoner og endringslogg samlet. Kjør tester før push, og bruk deretter **Sync now** i arbeidsområdets marketplace-administrasjon. Kontroller rapport, versjon og faktiske skills/verktøy i en ny chat; en pågående samtale kan kreve ny oppstart.
 
-Dette er under utvikling. Ingen administrasjonsverktøy eller admin-URL er verifisert, og skillen implementerer ingen serverfunksjon. [Serverkravene](plugins/tactical-rmm/docs/MCP-ADMIN-CONTRACT.md) beskriver hva som må leveres og testes før flyten kan brukes. Ingen aktive brukere eller nøkler er endret.
+MCP-koden har separat utrulling. Pakkesynk endrer ikke serverkode, personlige nøkkelkoblinger eller allerede utførte handlinger. Lagre kjent fungerende commit før oppgradering; bruk en gjennomgått revert/ny pakkeversjon eller støttet import av kjent commit ved tilbakeføring. Ikke slett marketplace som rollback.
 
-## Førstegangsoppsett og logo
-
-`onboardingSkill` er satt i begge manifester og peker til oppsettsskillen. Den forklarer SSO, kontrollerer faktisk tilgjengelige statusfunksjoner og viser bare en verifisert, beskyttet setup-URL ved manglende personlig kobling. Ingen setup-sti er gjettet. Verten styrer når oppsett og OAuth-dialog startes; automatisk oppstart og nettleserstøtte må testes i riktig arbeidsområde.
-
-Original Tactical RMM-logo er lagt inn uendret som både `logo` og `composerIcon`, med [kilde og sjekksum](plugins/tactical-rmm/assets/README.md). Se [MCP-status og konkret videre arbeid](docs/MCP-HANDOFF.md) for det som er undersøkt og det MCP må bekrefte.
-
-## Kilder
-
-Kontrollert 14. november 2026: [OpenAI-pakkeformat](https://developers.openai.com/plugins/build/plugins), [GitHub-import og synkronisering](https://learn.chatgpt.com/docs/enterprise/plugin-management), [OAuth](https://developers.openai.com/plugins/build/auth), [Agent Plugins-schema](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json). Prosjektspesifikke observasjoner og begrensninger finnes i [verifikasjonsrapporten](docs/VERIFICATION.md).
+Kilder: [OpenAI-pakkeformat](https://developers.openai.com/plugins/build/plugins), [GitHub-import](https://learn.chatgpt.com/docs/enterprise/plugin-management), [OAuth](https://developers.openai.com/plugins/build/auth). Prosjektspesifikke kilde-/live-observasjoner finnes i testrapporten.

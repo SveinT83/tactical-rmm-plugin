@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-11-14T23:05:29.307429+00:00",
+  "checked_at_utc": "2026-11-16T09:55:12.750729+00:00",
   "kind": "public-metadata-only",
   "resource": {
     "authorization_servers": [
@@ -32,9 +32,267 @@
   },
   "server": {
     "name": "Datanora Tactical RMM",
-    "version": "0.2.8-command-validation"
+    "version": "0.4.0-native-api"
   },
   "tools": [
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "tactical-rmm"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "description": "Fetch an existing personal Tactical key by key_id and bind it to its matching SSO user entirely server-side. No key value input/output.",
+      "inputSchema": {
+        "properties": {
+          "idempotency_key": {
+            "description": "Unique operation ID; reuse unchanged when checking/retrying the same operation.",
+            "type": "string"
+          },
+          "key_id": {
+            "description": "Native key ID from access_keys; required for assign and mode=revoke.",
+            "type": "number"
+          },
+          "subject": {
+            "description": "Immutable Keycloak user ID from access_users; omit for own user.",
+            "type": "string"
+          },
+          "tactical_user_id": {
+            "description": "Tactical account ID from access_users. Required when the same email belongs to multiple native accounts and no current mapping resolves it.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "idempotency_key"
+        ],
+        "type": "object"
+      },
+      "name": "tactical-rmm_access_assign"
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "tactical-rmm"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "description": "Create a new personal Tactical API key and bind it server-side. Leaves existing keys intact. Requires a unique idempotency_key.",
+      "inputSchema": {
+        "properties": {
+          "expiration": {
+            "description": "Future RFC3339 expiry, at most 366 days.",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "description": "Unique operation ID; reuse unchanged when checking/retrying the same operation.",
+            "type": "string"
+          },
+          "subject": {
+            "description": "Immutable Keycloak user ID from access_users; omit for own user.",
+            "type": "string"
+          },
+          "tactical_user_id": {
+            "description": "Tactical account ID from access_users. Required when the same email belongs to multiple native accounts and no current mapping resolves it.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "expiration"
+        ],
+        "type": "object"
+      },
+      "name": "tactical-rmm_access_create"
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "tactical-rmm"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "description": "List native Tactical API key metadata for one SSO user. Never returns key values.",
+      "inputSchema": {
+        "properties": {
+          "subject": {
+            "description": "Immutable Keycloak user ID from access_users; omit for own user.",
+            "type": "string"
+          },
+          "tactical_user_id": {
+            "description": "Tactical account ID from access_users. Required when the same email belongs to multiple native accounts and no current mapping resolves it.",
+            "type": "number"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "name": "tactical-rmm_access_keys"
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "tactical-rmm"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "description": "mode=unlink removes only the MCP binding; mode=revoke also revokes the specified owned native key. Cannot revoke the operator verifier key. Destructive; specify the intended mode explicitly.",
+      "inputSchema": {
+        "properties": {
+          "idempotency_key": {
+            "description": "Unique operation ID; reuse unchanged when checking/retrying the same operation.",
+            "type": "string"
+          },
+          "key_id": {
+            "description": "Native key ID from access_keys; required for assign and mode=revoke.",
+            "type": "number"
+          },
+          "mode": {
+            "enum": [
+              "unlink",
+              "revoke"
+            ],
+            "type": "string"
+          },
+          "subject": {
+            "description": "Immutable Keycloak user ID from access_users; omit for own user.",
+            "type": "string"
+          },
+          "tactical_user_id": {
+            "description": "Tactical account ID from access_users. Required when the same email belongs to multiple native accounts and no current mapping resolves it.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "mode"
+        ],
+        "type": "object"
+      },
+      "name": "tactical-rmm_access_remove"
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "tactical-rmm"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "description": "Create and bind a replacement personal MCP key. Old keys are retained by default; revoke_old may revoke only the previous MCP-managed key. Never returns keys.",
+      "inputSchema": {
+        "properties": {
+          "expiration": {
+            "description": "Future RFC3339 expiry, at most 366 days.",
+            "type": "string"
+          },
+          "idempotency_key": {
+            "description": "Unique operation ID; reuse unchanged when checking/retrying the same operation.",
+            "type": "string"
+          },
+          "revoke_old": {
+            "description": "Default false. Only true for an old key created by these MCP management tools.",
+            "type": "boolean"
+          },
+          "subject": {
+            "description": "Immutable Keycloak user ID from access_users; omit for own user.",
+            "type": "string"
+          },
+          "tactical_user_id": {
+            "description": "Tactical account ID from access_users. Required when the same email belongs to multiple native accounts and no current mapping resolves it.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "idempotency_key",
+          "expiration"
+        ],
+        "type": "object"
+      },
+      "name": "tactical-rmm_access_rotate"
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "tactical-rmm"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      },
+      "description": "List SSO users and mapping status. management/Senior sees others; everyone else sees only self. Returns no API keys.",
+      "inputSchema": {
+        "properties": {
+          "subject": {
+            "description": "Immutable Keycloak user ID from access_users; omit for own user.",
+            "type": "string"
+          },
+          "tactical_user_id": {
+            "description": "Tactical account ID from access_users. Required when the same email belongs to multiple native accounts and no current mapping resolves it.",
+            "type": "number"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "name": "tactical-rmm_access_users"
+    },
     {
       "_meta": {
         "securitySchemes": [
@@ -110,6 +368,7 @@
     }
   ],
   "new_tools_requiring_review": [],
+  "reviewed_tools_missing_from_catalog": [],
   "oauth_login_tested": false,
   "personal_isolation_tested": false,
   "browser_tested": false

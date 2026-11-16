@@ -1,0 +1,83 @@
+{
+  "checked_at_utc": "2026-11-16T09:55:13.266842+00:00",
+  "kind": "prelaunch-readonly-without-identity",
+  "package": {
+    "package": "plugins/tactical-rmm",
+    "version": "1.3.0-rc.2",
+    "skills": 3,
+    "scanned_files": 51
+  },
+  "server": {
+    "name": "Datanora Tactical RMM",
+    "version": "0.4.0-native-api"
+  },
+  "checks": [
+    {
+      "name": "package-and-live-catalog",
+      "passed": true
+    },
+    {
+      "name": "anonymous-setup-signin-page",
+      "passed": true,
+      "observed": {
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "bearer_challenge": false,
+        "resource_metadata_in_challenge": false,
+        "no_store": true,
+        "same_origin_referrer_policy": true,
+        "keycloak_login_link_present": true
+      }
+    },
+    {
+      "name": "tactical-rmm_access_keys-requires-oauth",
+      "passed": true,
+      "observed": {
+        "status": 401,
+        "content_type": "application/json",
+        "bearer_challenge": true,
+        "resource_metadata_in_challenge": true,
+        "no_store": true,
+        "same_origin_referrer_policy": false
+      }
+    },
+    {
+      "name": "tactical-rmm_access_users-requires-oauth",
+      "passed": true,
+      "observed": {
+        "status": 401,
+        "content_type": "application/json",
+        "bearer_challenge": true,
+        "resource_metadata_in_challenge": true,
+        "no_store": true,
+        "same_origin_referrer_policy": false
+      }
+    },
+    {
+      "name": "internal-admin-backend-not-public",
+      "passed": true,
+      "observed": {
+        "status": 404,
+        "content_type": "text/html",
+        "bearer_challenge": false,
+        "resource_metadata_in_challenge": false,
+        "no_store": false,
+        "same_origin_referrer_policy": false
+      }
+    }
+  ],
+  "all_automated_checks_passed": true,
+  "authenticated_checks_passed": false,
+  "authenticated_tool_calls_performed": false,
+  "connection_mode": "standalone-remote-mcp",
+  "key_mutations_performed": false,
+  "customer_machine_actions_performed": false,
+  "customer_data_retrieved": false,
+  "launch_approved": false,
+  "limitations": [
+    "access_assign describes key_id as required but does not list it in required; enforce it before calls.",
+    "access_remove mode=revoke conditionally requires key_id in documentation/server validation.",
+    "idempotency_key length and expiration bounds are documented runtime requirements, not complete input-schema constraints.",
+    "No authenticated user mapping, role isolation, key lifecycle or ChatGPT browser flow was tested by this script."
+  ]
+}

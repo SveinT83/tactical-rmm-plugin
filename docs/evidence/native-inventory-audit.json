@@ -1,0 +1,47 @@
+{
+  "checked_date": "2026-11-16",
+  "source_repository": "SveinT83/Tactical-RMM-MCP",
+  "source_commit": "5b4d4322fb6a86a17ca25a800e9ee98845e08652",
+  "source_file": "cli/internal/mcp/native_api.json",
+  "source_sha256": "63810a567000f22787cdc283a74272a98ec74d3fe46defdf0fffdd02e6b3dc08",
+  "source_snapshot_captured": "2026-11-15",
+  "inventory_operations": 328,
+  "classified_technician_rest": 291,
+  "excluded_operations": 37,
+  "unique_method_path_pairs": true,
+  "exclusions_have_reasons": true,
+  "exposed_by_root": {
+    "/": 1,
+    "/accounts": 32,
+    "/agents": 79,
+    "/alerts": 12,
+    "/api": 1,
+    "/automation": 23,
+    "/checks": 10,
+    "/clients": 17,
+    "/core": 35,
+    "/logs": 6,
+    "/reporting": 41,
+    "/scripts": 12,
+    "/services": 4,
+    "/software": 8,
+    "/tasks": 6,
+    "/winupdate": 4
+  },
+  "exposed_by_method": {
+    "DELETE": 40,
+    "GET": 104,
+    "PATCH": 9,
+    "POST": 102,
+    "PUT": 36
+  },
+  "live_authenticated_search_tested": false,
+  "individual_operations_executed": false,
+  "full_gui_parity": false,
+  "known_session_gaps": [
+    "interactive WebSocket output and persistent terminals",
+    "live dashboard streams requiring native sessions",
+    "MeshCentral remote desktop rendering/control"
+  ],
+  "note": "Independent static inventory audit; registered contracts do not prove runtime or per-user success."
+}

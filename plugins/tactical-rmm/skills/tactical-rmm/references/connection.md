@@ -10,7 +10,7 @@ Verifisert offentlig metadata 14. november 2026:
 | Scope | `tactical-rmm` |
 | Eksisterende forhåndsregistrerte klient | `tactical-chatgpt` |
 
-App-ID-en i `.app.json` er lest fra eksisterende personlig plugin. Dette er en appreferanse, ikke dokumentasjon på tilgang for hele arbeidsområdet. GitHub-pakken oppretter ingen app, klient eller nøkkelkobling. Personlig OAuth og godkjente apprettigheter må være tilgjengelige i verten.
+Pakken deklarerer endepunktet direkte i `mcp.json` og kompatibilitetsfilen `.mcp.json`, med OAuth-modus `provided`, klient-ID `tactical-chatgpt` og `client_secret_basic`. Ingen ID fra den slettede personlige ChatGPT-pluginen kreves. En administrator konfigurerer eventuell klienthemmelighet i vertens beskyttede oppsett; den finnes aldri i pakken eller chatten. Teknikeren bruker deretter personlig SSO. Web-/arbeidsområdeinstallasjonen må fortsatt sluttkontrolleres i ChatGPT.
 
 | Observasjon | Oppførsel |
 | --- | --- |
