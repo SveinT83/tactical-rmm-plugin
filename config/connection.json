@@ -46,11 +46,17 @@
   ],
   "appBindingVerification": {
     "mode": "standalone-remote-mcp",
-    "status": "blocked-missing-registered-chatgpt-app",
+    "status": "awaiting-workspace-publication-before-canonical-adoption",
     "prior_personal_plugin_deleted": true,
     "confirmed_by_user_date": "2026-11-16",
     "existing_app_dependency_required": true,
     "workspacePluginId": "Plugin_960c953284a0819184889146d979392f",
-    "note": "Existing GitHub-managed workspace plugin is retained. No registered Tactical app ID is verified. App binding and browser OAuth must be completed before SSO can be claimed."
+    "note": "New SSO draft and its app mapping were read with Plugin Creator. User confirms successful personal login. Draft is USER/PRIVATE; it must become available in the target workspace before canonical GitHub adoption. Do not put this personal plugin ID in the workspace marketplace. Final goal is one SSO-backed GitHub-managed plugin, not a wrapper plus a second plugin.",
+    "candidateAppId": "asdk_app_6afafd3b578c8191a62956239872dd3b",
+    "candidatePluginId": "plugin_asdk_app_6afafd3b578c8191a62956239872dd3b",
+    "candidateTechnicalName": "dev-6afafd3b578c8191a62956239872dd3b",
+    "candidateScope": "USER",
+    "candidateReleaseId": "PluginRelease_9e484e010ab8819183571e5bfec67887",
+    "candidateVerifiedDate": "2026-11-16"
   }
 }
