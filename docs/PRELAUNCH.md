@@ -1,5 +1,25 @@
 # Før-lanseringstest mot MCP 0.4.0
 
+## Gjeldende OAuth-oppsett: rc.4, 16. november 2026
+
+`tactical-chatgpt` er endret til offentlig authorization-code-klient med påkrevd
+PKCE S256. Pluginen bruker `tokenEndpointAuthMethod: none` uten klienthemmelighet.
+Førkontrollen fant null aktive og frakoblede sesjoner. Kjørende MCP ble undersøkt:
+intern tokenkontroll bruker separat `tactical-mcp-introspection`; ingen kjørende
+container hadde `tactical-chatgpt` som miljøvariabelverdi. Dette utelukker ikke
+andre, ikke kartlagte eksterne konfigurasjoner. Callback, scopes, mappere og
+øvrige klientinnstillinger ble bevart; privat tilbakeføringskopi finnes på Keycloak-serveren.
+
+Fem direkte OAuth-kontroller bestod: S256 når innloggingsskjemaet, manglende PKCE
+og plain avvises, ukjent callback avvises, og tokenendepunktet godtar offentlig
+klientidentifikasjon uten hemmelighet før en ugyldig testkode avvises med
+`invalid_grant`. Ingen ekte autorisasjonskode, brukertoken eller kundehandling
+ble brukt. De fem eksisterende lesende MCP-kontrollene består også.
+Se [migreringsrapporten](evidence/public-oauth-migration.json).
+
+Dette fullfører ikke den manglende ChatGPT-appbindingen eller personlig SSO.
+Eldre rapporttekst under beskriver tidligere kandidater, ikke dagens klienttype.
+
 ## Ny installasjonsobservasjon 16. november 2026
 
 Arbeidsområdeimporten av rc.2 viser MCP-server og tre skills, men ingen kontoknapp. `scripts/check_client.py` reproduserer manglende appbinding med faktisk lokal klient: tre skills, null registrerte apper og null oppdagede MCP-servere. Det siste er klientens lokale resultat; arbeidsområdets admin-side viser en MCP-deklarasjon. Ingen av observasjonene bekrefter en brukbar OAuth-tilkobling. Rapportene under er tidligere pakketester og serverkontroller, ikke bestått innlogging.

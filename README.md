@@ -1,6 +1,6 @@
 # Tactical RMM
 
-**Trønder Data · 1.3.0-rc.3 · testkandidat mot MCP 0.4.0**
+**Trønder Data · 1.3.0-rc.4 · testkandidat mot MCP 0.4.0**
 
 Pluginpakke med tre norske skills og deklarasjon av eksisterende `https://tactical-mcp.tronderdata.no/chatgpt/mcp`. Den slettede personlige ChatGPT-pluginen brukes ikke som avhengighet. Ingen ny MCP-server eller Keycloak-klient opprettes.
 
@@ -23,7 +23,7 @@ Original Tactical RMM-logo følger pakken med kilde og sjekksum. Nøkler, token 
 
 ## Før installasjon
 
-Administrator må først få den registrerte ChatGPT-appkoblingen på plass, med den eksisterende OAuth-klienten `tactical-chatgpt` og eventuell klienthemmelighet i vertens beskyttede oppsett. Pakken beskriver `provided` og `client_secret_basic`; den oppretter ikke en ny klient og kan ikke erstatte appregistrering eller beskyttet hemmelighetskonfigurasjon. Målet er at teknikeren deretter bruker egen SSO/MFA og samtykke via kontoknappen.
+Administrator må først få den registrerte ChatGPT-appkoblingen på plass, med den eksisterende OAuth-klienten `tactical-chatgpt` uten klienthemmelighet, med PKCE S256. Pakken beskriver `provided` og `none`; den oppretter ikke en ny klient og kan ikke erstatte appregistrering eller beskyttet hemmelighetskonfigurasjon. Målet er at teknikeren deretter bruker egen SSO/MFA og samtykke via kontoknappen.
 
 Mangler personlig Tactical-kobling, viser skillen bekreftet forklaring og lenken `https://tactical-mcp.tronderdata.no/admin/`. Management kan klargjøre ansatte slik at de bare trenger SSO. Første nøkkel for en vanlig bruker registreres direkte på den beskyttede siden eller av management, aldri gjennom chatten.
 
@@ -44,7 +44,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/prelaunch.py --save
 ```
 
-Arkiv: `dist/tactical-rmm-1.3.0-rc.3.zip`, med SHA-256-fil. Det inneholder én plugin. Bygget leser arkivet tilbake og skanner kilde, Git-indeks og arkiv for kjente hemmelighetsmønstre.
+Arkiv: `dist/tactical-rmm-1.3.0-rc.4.zip`, med SHA-256-fil. Det inneholder én plugin. Bygget leser arkivet tilbake og skanner kilde, Git-indeks og arkiv for kjente hemmelighetsmønstre.
 
 [Schema-notatet](schemas/README.md) forklarer separat kontroll av portable transportfelt og OpenAIs dokumenterte OAuth-utvidelse. Ingen full ChatGPT-import eller personlig OAuth-flyt er påstått bestått av skjemakontroll.
 

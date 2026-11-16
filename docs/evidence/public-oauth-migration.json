@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-16",
+  "client_id": "tactical-chatgpt",
+  "flow": "public-authorization-code-pkce-S256",
+  "checks": {
+    "s256": {
+      "http_status": 200,
+      "login_form": true,
+      "passed": true
+    },
+    "missing_pkce": {
+      "http_status": 302,
+      "oauth_error": "invalid_request",
+      "pkce_error_confirmed": true,
+      "passed": true
+    },
+    "plain": {
+      "http_status": 302,
+      "oauth_error": "invalid_request",
+      "pkce_error_confirmed": true,
+      "passed": true
+    },
+    "wrong_redirect": {
+      "http_status": 400,
+      "login_form": false,
+      "passed": true
+    },
+    "token_without_client_secret": {
+      "http_status": 400,
+      "error": "invalid_grant",
+      "passed": true
+    }
+  },
+  "all_passed": true,
+  "personal_login_tested": false,
+  "audit": {
+    "active_sessions_before": 0,
+    "offline_sessions_before": 0,
+    "runtime_introspection_client": "tactical-mcp-introspection",
+    "runtime_environment_references_to_chatgpt_client": 0,
+    "other_client_settings_preserved": true,
+    "scopes_preserved": true,
+    "private_rollback_snapshot_saved": true
+  }
+}

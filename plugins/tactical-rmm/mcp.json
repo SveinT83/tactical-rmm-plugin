@@ -11,7 +11,7 @@
             "client": {
               "mode": "provided",
               "clientId": "tactical-chatgpt",
-              "tokenEndpointAuthMethod": "client_secret_basic"
+              "tokenEndpointAuthMethod": "none"
             },
             "baseScopes": [
               "tactical-rmm"

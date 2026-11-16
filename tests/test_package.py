@@ -68,6 +68,19 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(self.root)
 
+    def test_public_client_cannot_require_a_secret(self):
+        for path in ["plugins/tactical-rmm/mcp.json", "plugins/tactical-rmm/.mcp.json"]:
+            with self.subTest(path=path):
+                self.edit_json(path, lambda x: x["mcpServers"]["tactical-rmm"]["extensions"]["com.openai"]["auth"]["client"].update(tokenEndpointAuthMethod="client_secret_basic"))
+                with self.assertRaises(ValueError):
+                    validate(self.root)
+                self.edit_json(path, lambda x: x["mcpServers"]["tactical-rmm"]["extensions"]["com.openai"]["auth"]["client"].update(tokenEndpointAuthMethod="none"))
+
+    def test_connection_reference_cannot_retain_confidential_client_method(self):
+        self.edit_json("config/connection.json", lambda x: x.update(tokenEndpointAuthMethod="client_secret_basic"))
+        with self.assertRaises(ValueError):
+            validate(self.root)
+
     def test_static_api_key_header_is_rejected(self):
         self.edit_json("plugins/tactical-rmm/mcp.json", lambda x: x["mcpServers"]["tactical-rmm"].update(headers={"X-API-Key": "${FORBIDDEN_SHARED_KEY}"}))
         with self.assertRaises(ValueError):

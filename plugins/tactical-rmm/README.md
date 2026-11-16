@@ -1,6 +1,6 @@
 # Tactical RMM
 
-Versjon 1.3.0-rc.3 · Trønder Data · teknisk navn `tactical-rmm`.
+Versjon 1.3.0-rc.4 · Trønder Data · teknisk navn `tactical-rmm`.
 
 Pluginpakke med eksisterende HTTPS MCP-endepunkt og tre norske skills. Original Tactical RMM-logo følger pakken. ChatGPTs kontotilkobling til personlig SSO mangler fortsatt. Denne versjonen retter veiledningen, men gir ikke en ny kontoknapp.
 
@@ -14,7 +14,7 @@ Kandidaten bruker MCP 0.4.0s faktiske kontrakt: generell API-oppdagelse/utførel
 
 ## Første installasjon
 
-Administrator må først få den registrerte ChatGPT-appkoblingen på plass, med eksisterende OAuth-klient `tactical-chatgpt` og eventuell klienthemmelighet i vertens beskyttede oppsett. Ingen hemmelighet følger pakken. Målet er at teknikeren deretter bruker egen SSO/MFA via kontoknappen. GitHub-import kan ha Desktop only-begrensning; faktisk nettleserinstallasjon må godkjennes før nettleserstøtte påstås.
+Administrator må først få den registrerte ChatGPT-appkoblingen på plass, med eksisterende OAuth-klient `tactical-chatgpt` uten klienthemmelighet, med PKCE S256. Ingen hemmelighet følger pakken. Målet er at teknikeren deretter bruker egen SSO/MFA via kontoknappen. GitHub-import kan ha Desktop only-begrensning; faktisk nettleserinstallasjon må godkjennes før nettleserstøtte påstås.
 
 ## Utvikling fra kilde
 

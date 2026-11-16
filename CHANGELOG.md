@@ -1,5 +1,11 @@
 # Endringslogg
 
+## 1.3.0-rc.4 – 2026-11-16
+
+- Eksisterende `tactical-chatgpt` endret til offentlig OAuth-klient med påkrevd PKCE S256. Pakken bruker provided-klient og tokenautentisering `none`, uten klienthemmelighet.
+- Førkontroll fant null aktive og frakoblede sesjoner. Kjørende MCP bruker separat `tactical-mcp-introspection`; intern tokenkontroll og andre klienter beholdes.
+- Begge MCP-manifester, tilkoblingsreferanse, validering og administratorveiledning er oppdatert samlet. Manglende ChatGPT-appbinding er fortsatt en separat installasjonsfeil; personlig SSO er ikke erklært ferdigtestet.
+
 ## Klargjort overgang til registrert MCP-kobling – 2026-11-16
 
 - Utviklingsverktøy for å binde en verifisert ChatGPT MCP-registrering med samme native pakkeformat som BookStack, uten ny server eller Keycloak-klient.

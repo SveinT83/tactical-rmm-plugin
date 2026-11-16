@@ -26,10 +26,10 @@ samme innlogging i den observerte arbeidsområdeinstallasjonen.
 3. Fyll inn **Tactical RMM** som navn og
    `https://tactical-mcp.tronderdata.no/chatgpt/mcp` som serveradresse.
 4. Velg **OAuth**. Hvis skjemaet har innstillinger for forhåndsregistrert
-   klient, bruk klient-ID `tactical-chatgpt`, tokenmetode `client_secret_basic`
+   klient, bruk klient-ID `tactical-chatgpt`, tokenmetode `none` / Ingen
    og scope `tactical-rmm`. Hvis flere scope må skrives i ett felt, bruk
-   `openid profile email tactical-rmm`. Eventuell eksisterende klienthemmelighet
-   fylles bare inn i ChatGPTs beskyttede felt. Ikke send den i chatten.
+   `openid profile email tactical-rmm`. Klienten er offentlig med PKCE S256;
+   la klienthemmelighet stå tom.
 5. Fullfør registreringen med **Create as a plugin / Opprett som plugin** og
    personlig SSO dersom ChatGPT ber om det. Dette registrerer tilkoblingen til
    den eksisterende serveren; det oppretter ingen ny MCP-server eller Keycloak-klient.
@@ -51,8 +51,8 @@ registrert kobling. Brukeren kunne derfor installere den ferdige Git-pluginen
 og koble til konto uten ny manuell MCP-registrering ved installasjon.
 
 Hvis menyvalget ikke finnes, stopp før en annen import opprettes. Beskriv hvilke
-valg som faktisk vises. Hvis klienthemmeligheten ikke er tilgjengelig, må
-MCP-/Keycloak-administrator legge den inn direkte i det beskyttede feltet.
+valg som faktisk vises. Hvis skjemaet fortsatt krever klienthemmelighet, kontroller at tokenmetoden er
+`none` og at skjemaet har hentet oppdatert konfigurasjon.
 Ved en redirect-feil må identitetsadministrator godkjenne den eksakte callback-URI-en
 ChatGPT viser for den eksisterende klienten, uten å gjette eller bruke jokertegn.
 

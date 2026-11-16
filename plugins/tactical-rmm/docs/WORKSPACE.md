@@ -14,9 +14,9 @@ Pakken deklarerer `https://tactical-mcp.tronderdata.no/chatgpt/mcp` som remote S
 
 ## Én gangs administratoroppsett
 
-Autentiseringskonfigurasjonen bruker den eksisterende forhåndsregistrerte Keycloak-klienten `tactical-chatgpt`, `client_secret_basic` og scope `tactical-rmm`. Issuer er `https://auth.tronderdata.no/realms/tronderdata`. Ikke velg DCR/CIMD eller opprett ny Keycloak-klient.
+Autentiseringskonfigurasjonen bruker den eksisterende forhåndsregistrerte Keycloak-klienten `tactical-chatgpt`, `none` og scope `tactical-rmm`. Issuer er `https://auth.tronderdata.no/realms/tronderdata`. Ikke velg DCR/CIMD eller opprett ny Keycloak-klient.
 
-Den eksisterende klienthemmeligheten må være konfigurert i vertens beskyttede OAuth-oppsett. Hvis verten ber om den under opprettelse/installasjon, håndterer autorisert administrator dette direkte i den beskyttede innstillingen. Den finnes ikke i Git, arkivet, eksempler eller samtalen. Pakken kan beskrive klienten, men kan ikke erstatte denne beskyttede konfigurasjonen.
+Klienten er offentlig og krever PKCE S256. Velg tokenautentisering `none` / Ingen og la klienthemmelighet stå tom. Den separate konfidensielle klienten `tactical-mcp-introspection` brukes bare internt av MCP til tokenkontroll og skal ikke endres eller brukes i ChatGPT-skjemaet.
 
 Bruk faktisk redirect-URI som verten viser og som den eksisterende Keycloak-klienten tillater. Ikke gjett eller endre produksjonens callback-liste under pakkeutviklingen. Hvis en ny callback må godkjennes, håndteres det separat av MCP-/identitetsadministrator.
 
@@ -26,7 +26,7 @@ Deretter bruker teknikeren egen SSO, eventuell MFA og samtykke. En manglende per
 
 Repo: `https://github.com/SveinT83/tactical-rmm-plugin`.
 Marketplace: `.agents/plugins/marketplace.json`, relativt til repoets rot.
-Importgren: `main`, med kandidat 1.3.0-rc.3 for MCP 0.4.0. Kandidatstatus betyr at personlig OAuth og faktisk nettleserinstallasjon fortsatt skal sluttkontrolleres.
+Importgren: `main`, med kandidat 1.3.0-rc.4 for MCP 0.4.0. Kandidatstatus betyr at personlig OAuth og faktisk nettleserinstallasjon fortsatt skal sluttkontrolleres.
 
 Arbeidsområdeadministrator bruker Admin → Plugins → Add → Import marketplace, repo-URL som Source, tom Path og valgt branch/commit. Les importresultatet og sett arbeidsområdets rolle-/installasjons-/autentiseringsinnstillinger. GitHub-import gir ikke automatisk rettigheter i Tactical.
 

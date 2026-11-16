@@ -1,5 +1,13 @@
 # MCP: undersøkt status og hva som må bekreftes
 
+**Ny driftsendring 16. november 2026:** Brukeren autoriserte overgang av eksisterende
+`tactical-chatgpt` til offentlig klient med PKCE S256. Dette er utført og verifisert;
+ChatGPT bruker `none` og ingen klienthemmelighet. MCPs separate konfidensielle
+`tactical-mcp-introspection` er beholdt. Eldre MCP-kildedokumentasjon som sier
+`client_secret_basic` for ChatGPT-klienten må oppdateres ved neste serverendring;
+den må ikke brukes som grunnlag for å tilbakeføre klienten til konfidensiell.
+Se [gjeldende verifikasjon](PRELAUNCH.md) og [OAuth-rapport](evidence/public-oauth-migration.json).
+
 **Historisk notat for 1.2.0.** Nyere kilde- og live-kontroll av MCP 0.4.0 finnes i [PRELAUNCH.md](PRELAUNCH.md). Setup-URL og tilgangskatalog er nå bekreftet for testkandidaten. Den tidligere personlige pluginen er slettet etter brukerens bekreftelse; kandidaten deklarerer remote MCP direkte og krever ingen gammel app-ID. Full brukerfunksjonsdekning er fortsatt utestet; se [akseptansemålet](FUNCTIONAL-COVERAGE.md).
 
 Pluginpakke: Tactical RMM 1.2.0. Oppdatert 15. november 2026, Europe/Oslo.

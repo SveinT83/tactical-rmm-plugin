@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SEMVER = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?\Z")
 APP_ID = re.compile(r"asdk_app_[A-Za-z0-9]+\Z")
 DELETED_APP_ID = "asdk_app_6af232dfb75c81919191e1ab5b5fd9c0"
-OAUTH = {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "client_secret_basic"}, "baseScopes": ["tactical-rmm"]}
+OAUTH = {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "none"}, "baseScopes": ["tactical-rmm"]}
 IGNORED = {".git", ".venv", "dist", "build", "node_modules", "__pycache__", ".pytest_cache"}
 
 
@@ -188,7 +188,8 @@ def validate(root=ROOT):
         require(not path.is_symlink(), "Package contains symlink")
         require(not any(p in IGNORED for p in path.relative_to(package).parts), "Generated/local file in package")
     require(connection["auth"] == auth, "Connection reference differs from runtime OAuth config")
-    require(connection["auth"] == {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "client_secret_basic"}, "baseScopes": ["tactical-rmm"]}, "OAuth contract changed")
+    require(connection["tokenEndpointAuthMethod"] == auth["client"]["tokenEndpointAuthMethod"], "Token authentication reference differs")
+    require(connection["auth"] == {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "none"}, "baseScopes": ["tactical-rmm"]}, "OAuth contract changed")
     require(connection["mcpUrl"] == "https://tactical-mcp.tronderdata.no/chatgpt/mcp", "Wrong MCP endpoint")
     require(connection["issuer"] == "https://auth.tronderdata.no/realms/tronderdata", "Wrong issuer")
     require(connection["setupUrl"] == "https://tactical-mcp.tronderdata.no/admin/", "Wrong verified setup URL")
