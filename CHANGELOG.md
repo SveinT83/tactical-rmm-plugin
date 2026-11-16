@@ -1,5 +1,11 @@
 # Endringslogg
 
+## 1.3.0-rc.3 – 2026-11-16
+
+- Oppsettsskillen skiller manglende ChatGPT-kontotilkobling fra manglende personlig Tactical-nøkkel. Den sender ikke teknikeren til Codex eller manuell MCP-registrering.
+- Ny kontroll med faktisk klient oppdager om pakken mangler registrert app og kontolenke. Kontrollen feiler for denne kandidaten; SSO-flyten er fortsatt ikke levert.
+- Dokumentert at GitHub-synk bare henter publiserte endringer. Eksisterende arbeidsområdeplugin beholdes; registrert OAuth-app må verifiseres før appbinding kan legges til.
+
 ## 1.3.0-rc.2 – 2026-11-16
 
 - Selvstendig remote MCP-konfigurasjon med eksisterende endepunkt og provided OAuth-klient; bindingen til den slettede personlige pluginen er fjernet.

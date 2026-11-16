@@ -1,5 +1,11 @@
 # Før-lanseringstest mot MCP 0.4.0
 
+## Ny installasjonsobservasjon 16. november 2026
+
+Arbeidsområdeimporten av rc.2 viser MCP-server og tre skills, men ingen kontoknapp. `scripts/check_client.py` reproduserer manglende appbinding med faktisk lokal klient: tre skills, null registrerte apper og null oppdagede MCP-servere. Det siste er klientens lokale resultat; arbeidsområdets admin-side viser en MCP-deklarasjon. Ingen av observasjonene bekrefter en brukbar OAuth-tilkobling. Rapportene under er tidligere pakketester og serverkontroller, ikke bestått innlogging.
+
+Rc.3 retter oppsettsteksten og legger til klientkontrollen. Kontrollen forventes fortsatt å feile til en verifisert registrert Tactical-app er bundet til pakken. SSO og ChatGPT-nettleser er fortsatt ikke godkjent.
+
 Oppdatert 16. november 2026. Kandidat `1.3.0-rc.2` distribueres fra `main` for import. Testene ble opprinnelig kjørt på kandidatgrenen før sammenslåing. Ingen ChatGPT-opplasting, lansering eller produksjonsendring er utført av denne testen.
 
 ## Selvstendig pakke etter slettet personlig plugin

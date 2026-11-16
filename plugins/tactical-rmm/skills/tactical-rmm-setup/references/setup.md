@@ -1,6 +1,6 @@
 # Bekreftet tilkobling og oppsettsadresse
 
-Pakken er selvstendig med `mcp.json` og en Codex-kompatibel `.mcp.json`. Ingen app-ID fra den slettede personlige pluginen brukes. Den eksisterende MCP-serveren og forhåndsregistrerte OAuth-klienten gjenbrukes; ingen server eller Keycloak-klient opprettes av pakken.
+Pakken deklarerer MCP i `mcp.json` og `.mcp.json`, men mangler foreløpig en registrert ChatGPT-app. Arbeidsområdeimporten viste ingen kontoknapp. Dette er en kjent installasjonsfeil, ikke bevis på manglende personlig API-nøkkel. Ikke send teknikeren til Codex eller be vedkommende registrere serveren manuelt. Administrator må verifisere appregistrering og binding i ChatGPT. Ingen app-ID fra den slettede personlige pluginen brukes. Den eksisterende MCP-serveren og forhåndsregistrerte OAuth-klienten skal gjenbrukes; ingen server eller Keycloak-klient opprettes av pakken.
 
 MCP-endepunkt: `https://tactical-mcp.tronderdata.no/chatgpt/mcp`.
 Issuer: `https://auth.tronderdata.no/realms/tronderdata`.

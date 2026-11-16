@@ -5,13 +5,24 @@ description: Bruk ved installasjon, første tilkobling, SSO-innlogging eller man
 
 # Kom i gang med Tactical RMM
 
-Pluginen deklarerer den eksisterende Tactical RMM MCP-serveren direkte. Den krever ingen tidligere personlig ChatGPT-plugin eller app-ID. Når verten/arbeidsområdet har konfigurert pluginens OAuth-tilkobling, bruker teknikeren vertens tilkoblingsknapp med egen Keycloak-konto, eventuell MFA og samtykke. Ikke be teknikeren skrive MCP-adresse, klienthemmelighet eller Tactical API-nøkkel i chatten. Ved manglende hostkonfigurasjon må administrator bruke den forberedte MCP-/OAuth-konfigurasjonen i vertens beskyttede oppsett. Ikke opprett en ny MCP-server eller Keycloak-klient.
+Oppsettet har to trinn: koble kontoen til Tactical RMM i ChatGPT med SSO, og kontroller deretter personlig Tactical-tilgang. ChatGPT håndterer innlogging og samtykke. Denne skillen kan veilede, men kan ikke opprette en kontotilkobling eller åpne en innloggingsdialog på egen hånd.
+
+## Koble til kontoen i ChatGPT
+
+Kontroller først om pluginens egne Tactical-verktøy er tilgjengelige. Hvis de mangler:
+
+1. Forklar kort: «Tactical RMM er installert, men kontotilkoblingen er ikke tilgjengelig i denne chatten ennå.» Manglende verktøy beviser ikke at en API-nøkkel mangler.
+2. Hvis pluginen har en registrert Tactical-app, bruk dens verifiserte ChatGPT-tilkoblingslenke eller **Apper → Tactical RMM → Koble til / Legg til konto**. Be brukeren fullføre SSO med sin egen jobbkonto. Bruk bare en appadresse som er lest fra faktisk registrering; ikke finn på en app-ID eller lov at en knapp finnes når den mangler.
+3. Hvis pluginen bare viser «MCP-servere» og ingen app eller kontoknapp, si: «Administrator må fullføre kontotilkoblingen for denne pluginen i ChatGPT.» Det er et oppsett av pluginen, ikke noe den enkelte teknikeren skal løse. Ikke send brukeren til Codex, terminal, konfigurasjonsfiler eller manuell MCP-registrering. Ikke be om API-nøkkel, klienthemmelighet eller token.
+4. Når kontoen er tilkoblet, kan brukeren starte en ny chat med Tactical RMM og få kontrollert status. En ny chat alene reparerer ikke en manglende appregistrering.
+
+Stopp statuskontrollen her hvis verktøyene mangler. Ikke presenter MCP-adressen eller den beskyttede API-oppsettsiden som en erstatning for ChatGPTs kontotilkobling. Ikke bruk gateway eller andre integrasjoner som bevis på at denne pluginen virker. Administratorveiledningen finnes i [installasjonsveiledningen](../../docs/WORKSPACE.md).
 
 Denne skillen er registrert som pakkens onboarding-skill. Verten styrer når setup startes og når innloggingsdialogen vises. Skillen kan ikke garantere automatisk innlogging, arbeidsområderettigheter eller nettleserstøtte.
 
 ## Kontroller tilkoblingen
 
-1. Oppdag faktisk tilgjengelige verktøy og les deres input- og outputkrav. Foretrekk et dokumentert, lesende verktøy som viser egen tilgangsstatus og eventuell setup-/administrasjons-URL. Verktøyet må kunne brukes etter SSO, også før en personlig Tactical-nøkkel er koblet. Ikke gjett navn eller parametere.
+1. Når verktøyene er tilgjengelige, les deres input- og outputkrav. Foretrekk et dokumentert, lesende verktøy som viser egen tilgangsstatus og eventuell setup-/administrasjons-URL. Verktøyet må kunne brukes etter SSO, også før en personlig Tactical-nøkkel er koblet. Ikke gjett navn eller parametere.
 2. Hvis serveren bare tilbyr de eldre katalog-/utførelsesverktøyene, opplys om begrensningen. Ved en bestilt lesetest kan et avgrenset katalogsøk etter versjonsendepunktet etterfølges av det bekreftede lesekallet. Ikke list kunder eller maskiner som innloggingstest. Ikke opprett, importer, forny eller tilbakekall nøkler som del av automatisk onboarding.
 3. Ved OAuth-utfordring eller ugyldig/utløpt innlogging: bruk vertens normale beskyttede innlogging til samme app og bruker. Ikke be om token og ikke send brukeren til en oppdiktet påloggingslenke. En generell intern feil eller 403 er ikke bevis på manglende Tactical-kobling.
 4. Når faktisk status bekrefter manglende personlig nøkkelkobling, si: «Innloggingen er gjennomført, men en administrator må fullføre koblingen til din personlige Tactical RMM-tilgang.» Forklar deretter en eventuell verifisert selvbetjeningsmulighet; den eksakte forklaringen gir ikke i seg selv bevis på at nøkkelen allerede finnes eller er koblet.

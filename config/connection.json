@@ -46,9 +46,11 @@
   ],
   "appBindingVerification": {
     "mode": "standalone-remote-mcp",
+    "status": "blocked-missing-registered-chatgpt-app",
     "prior_personal_plugin_deleted": true,
     "confirmed_by_user_date": "2026-11-16",
-    "existing_app_dependency_required": false,
-    "note": "No old plugin/app ID is used. Register/configure the existing MCP endpoint with the existing OAuth client during supported host setup."
+    "existing_app_dependency_required": true,
+    "workspacePluginId": "Plugin_960c953284a0819184889146d979392f",
+    "note": "Existing GitHub-managed workspace plugin is retained. No registered Tactical app ID is verified. App binding and browser OAuth must be completed before SSO can be claimed."
   }
 }
