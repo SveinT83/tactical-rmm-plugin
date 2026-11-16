@@ -16,7 +16,7 @@
     ]
   },
   "tokenEndpointAuthMethod": "client_secret_basic",
-  "keyAdministration": "Seks access-verktøy observert i live-katalogen på 0.3.2-admin-repair. Nøkkelverdier håndteres på serveren. Innlogget funksjon og flerbrukerisolasjon må fortsatt testes.",
+  "keyAdministration": "Seks access-verktøy observert i live-katalogen på 0.4.0-native-api. Nøkkelverdier håndteres på serveren. Innlogget funksjon og flerbrukerisolasjon må fortsatt testes.",
   "setupUrl": "https://tactical-mcp.tronderdata.no/admin/",
   "trustedSetupOrigins": [
     "https://tactical-mcp.tronderdata.no"
@@ -24,12 +24,14 @@
   "setupStatus": "Bekreftet i MCP-kildedokumentasjon og ved uautentisert HTTPS-lesing av innloggingssiden. Personlig SSO og tilgangsstatus er ikke testet fra denne chatten.",
   "sourceEvidence": {
     "repository": "SveinT83/Tactical-RMM-MCP",
-    "commit": "66b31ef1853f157dc71c887f80c6d73823163fef",
+    "commit": "5b4d4322fb6a86a17ca25a800e9ee98845e08652",
     "files": [
-      "ADMIN.md",
+      "API-COVERAGE.md",
       "CHATGPT-PLUGIN-INSTRUCTIONS.md",
-      "cli/internal/mcp/access_admin.go",
-      "cli/internal/admin/access.go"
+      "cli/internal/mcp/native_api.json",
+      "cli/internal/mcp/native_registry.go",
+      "cli/internal/mcp/native_error.go",
+      "cli/internal/mcp/oauth.go"
     ]
   },
   "reviewedToolNames": [
@@ -41,5 +43,12 @@
     "tactical-rmm_access_create",
     "tactical-rmm_access_rotate",
     "tactical-rmm_access_remove"
-  ]
+  ],
+  "appBindingVerification": {
+    "mode": "standalone-remote-mcp",
+    "prior_personal_plugin_deleted": true,
+    "confirmed_by_user_date": "2026-11-16",
+    "existing_app_dependency_required": false,
+    "note": "No old plugin/app ID is used. Register/configure the existing MCP endpoint with the existing OAuth client during supported host setup."
+  }
 }

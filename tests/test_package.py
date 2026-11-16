@@ -53,13 +53,28 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(self.root)
 
-    def test_plugin_id_cannot_be_used_as_app_id(self):
-        self.edit_json("plugins/tactical-rmm/.app.json", lambda x: x["apps"]["tactical-rmm"].update(id="plugin_" + x["apps"]["tactical-rmm"]["id"]))
+    def test_deleted_app_dependency_cannot_be_restored(self):
+        (self.root / "plugins/tactical-rmm/.app.json").write_text('{"apps": {}}')
         with self.assertRaises(ValueError):
             validate(self.root)
 
-    def test_duplicate_connection_is_rejected(self):
-        (self.root / "plugins/tactical-rmm/mcp.json").write_text("{}")
+    def test_wrong_mcp_origin_is_rejected(self):
+        self.edit_json("plugins/tactical-rmm/mcp.json", lambda x: x["mcpServers"]["tactical-rmm"].update(url="https://example.invalid/mcp"))
+        with self.assertRaises(ValueError):
+            validate(self.root)
+
+    def test_mcp_cannot_switch_to_dynamic_client_registration(self):
+        self.edit_json("plugins/tactical-rmm/mcp.json", lambda x: x["mcpServers"]["tactical-rmm"]["extensions"]["com.openai"]["auth"]["client"].update(mode="dcr"))
+        with self.assertRaises(ValueError):
+            validate(self.root)
+
+    def test_static_api_key_header_is_rejected(self):
+        self.edit_json("plugins/tactical-rmm/mcp.json", lambda x: x["mcpServers"]["tactical-rmm"].update(headers={"X-API-Key": "${FORBIDDEN_SHARED_KEY}"}))
+        with self.assertRaises(ValueError):
+            validate(self.root)
+
+    def test_legacy_mcp_connection_must_match_portable_connection(self):
+        self.edit_json("plugins/tactical-rmm/.mcp.json", lambda x: x["mcpServers"]["tactical-rmm"].update(url="https://example.invalid/mcp"))
         with self.assertRaises(ValueError):
             validate(self.root)
 
@@ -99,7 +114,9 @@ class PackageTests(unittest.TestCase):
         with zipfile.ZipFile(archive) as z:
             names = z.namelist()
             self.assertTrue(all(n.startswith("tactical-rmm/") for n in names))
-            self.assertIn("tactical-rmm/.app.json", names)
+            self.assertNotIn("tactical-rmm/.app.json", names)
+            self.assertIn("tactical-rmm/mcp.json", names)
+            self.assertIn("tactical-rmm/.mcp.json", names)
             self.assertIn("tactical-rmm/.codex-plugin/plugin.json", names)
             self.assertIn("tactical-rmm/skills/tactical-rmm/SKILL.md", names)
             self.assertIn("tactical-rmm/skills/tactical-rmm-admin/SKILL.md", names)

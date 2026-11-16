@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-11-15T21:21:33.291945+00:00",
+  "checked_at_utc": "2026-11-16T09:55:12.750729+00:00",
   "kind": "public-metadata-only",
   "resource": {
     "authorization_servers": [
@@ -32,7 +32,7 @@
   },
   "server": {
     "name": "Datanora Tactical RMM",
-    "version": "0.3.2-admin-repair"
+    "version": "0.4.0-native-api"
   },
   "tools": [
     {

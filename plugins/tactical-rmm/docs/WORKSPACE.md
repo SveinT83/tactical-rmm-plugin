@@ -1,57 +1,45 @@
-# Arbeidsområde og nettleser
+# Installere, dele og oppdatere Tactical RMM
 
-## Valgt kobling
+## Selvstendig plugin
 
-Hovedpakken har en skill og `.app.json`; den deklarerer ingen server i `mcp.json` eller `.mcp.json`. App-ID-en `asdk_app_6af232dfb75c81919191e1ab5b5fd9c0` er lest fra `.app.json` i eksisterende plugin via Plugin Creator. Den er ikke utledet ved å endre et ID-prefiks.
+Pakken deklarerer `https://tactical-mcp.tronderdata.no/chatgpt/mcp` som remote Streamable HTTP MCP. Den har tre norske skills, original Tactical-logo og ingen binding til den slettede personlige ChatGPT-pluginen. Ingen gammel plugin-ID eller app-ID skal oppgis for å bruke denne kandidaten.
 
-| Identifikator | Betydning |
-| --- | --- |
-| `tactical-rmm` | Stabilt teknisk navn på den nye kildepakken |
-| `plugin_asdk_app_6af232dfb75c81919191e1ab5b5fd9c0` | Eksisterende **personlig** plugin, scope USER bekreftet |
-| `asdk_app_6af232dfb75c81919191e1ab5b5fd9c0` | Verifisert registrert app som pakken refererer til |
-| `tactical-chatgpt` | Forhåndsregistrert OAuth-klient hos Keycloak, oppgitt av eier |
-| Ny arbeidsområde-plugin-ID | Tildeles ved faktisk arbeidsområdeimport; ikke kjent ennå |
+`mcp.json` er den portable konfigurasjonen. `.mcp.json` og `.codex-plugin/plugin.json` er kompatibilitetsfiler for Codex-klienter. Begge beskriver samme logiske forbindelse; de skal ikke opprette to servere. Eksisterende MCP-hosting og autentisering beholdes.
 
-Marketplace oppgir ikke `pluginId`: den personlige pluginen skal ikke brukes som om den allerede tilhører arbeidsområdet. Eksisterende plugin, deling og OAuth-konfigurasjon er ikke endret.
+## Én gangs administratoroppsett
 
-## Administratorsteg før kollegaer kan bruke pakken
+Autentiseringskonfigurasjonen bruker den eksisterende forhåndsregistrerte Keycloak-klienten `tactical-chatgpt`, `client_secret_basic` og scope `tactical-rmm`. Issuer er `https://auth.tronderdata.no/realms/tronderdata`. Ikke velg DCR/CIMD eller opprett ny Keycloak-klient.
 
-Kontroller i riktig arbeidsområde at den **eksisterende** registrerte appen kan gjøres tilgjengelig for aktuelle roller, med eksisterende OAuth-oppsett. Pakken gir ingen nye rettigheter. Behold klienten `tactical-chatgpt`, MCP-scope `tactical-rmm` og personlig autentisering. Hvis brukergrensesnittet krever klienthemmeligheten, må autorisert administrator håndtere den gjennom beskyttet konfigurasjon, uten chat eller Git.
+Den eksisterende klienthemmeligheten må være konfigurert i vertens beskyttede OAuth-oppsett. Hvis verten ber om den under opprettelse/installasjon, håndterer autorisert administrator dette direkte i den beskyttede innstillingen. Den finnes ikke i Git, arkivet, eksempler eller samtalen. Pakken kan beskrive klienten, men kan ikke erstatte denne beskyttede konfigurasjonen.
 
-Scope USER er bekreftet for den gamle pluginen; arbeidsområdets tilgang til selve appen er ikke bekreftet. Hvis appen ikke kan gjenbrukes i arbeidsområdet med eksisterende registrering, stans utrullingen og avklar støttet administratormigrering med plattformeier. Ikke registrer en dublettapp, erstatt ID-en med en gjettet verdi eller utvid eksisterende deling som del av pakkeutviklingen. Dersom en annen faktisk app-ID senere godkjennes, oppdater begge dokumentasjonen og validatorens forventede ID etter verifisering.
+Bruk faktisk redirect-URI som verten viser og som den eksisterende Keycloak-klienten tillater. Ikke gjett eller endre produksjonens callback-liste under pakkeutviklingen. Hvis en ny callback må godkjennes, håndteres det separat av MCP-/identitetsadministrator.
 
-### GitHub-import
+Deretter bruker teknikeren egen SSO, eventuell MFA og samtykke. En manglende personlig Tactical-kobling gir bekreftet status og lenke til `https://tactical-mcp.tronderdata.no/admin/`. Management kan utføre førstegangsoppsett for andre. En vanlig bruker kan legge inn egen nøkkel på den beskyttede siden; ingen nøkkel limes inn i chatten.
 
-Etter at eier, repo og synlighet er valgt, skal administrator ha lesetilgang fra sin GitHub-konto.
+## GitHub-import og nettleserstøtte
 
-1. Åpne **Admin → Plugins → Add → Import marketplace**.
-2. **Source:** faktisk repo-URL. **Path:** tom, siden `.agents/plugins/marketplace.json` ligger under repoets rot. Oppgi eventuell godkjent branch/tag/commit separat.
-3. Importer, les resultatrapporten og kontroller navnet **Tactical RMM**, versjonen og appavhengigheten.
-4. Sett roller, installasjons- og autentiseringspolicy i arbeidsområdet; repoets policy gjelder lokal testing og erstatter ikke disse innstillingene.
-5. La en tekniker koble sin egen konto og gjennomfør en lesende nettlesertest.
+Repo: `https://github.com/SveinT83/tactical-rmm-plugin`.
+Marketplace: `.agents/plugins/marketplace.json`, relativt til repoets rot.
+Testkandidat: grenen `test/mcp-0.3.2` har kandidaten for MCP 0.4.0; grennavnet beholdes for den eksisterende utkast-PR-en. `main` oppdateres først etter gjennomgang.
 
-[OpenAIs importveiledning](https://learn.chatgpt.com/docs/enterprise/plugin-management) beskriver formatet, tilgangskravene og menyene. Arkivopplasting er ikke hovedløpet for deling; repoimporten gir GitHub-synkronisering.
+Arbeidsområdeadministrator bruker Admin → Plugins → Add → Import marketplace, repo-URL som Source, tom Path og valgt branch/commit. Les importresultatet og sett arbeidsområdets rolle-/installasjons-/autentiseringsinnstillinger. GitHub-import gir ikke automatisk rettigheter i Tactical.
 
-## Nettleserstøtte: konkret begrensning og akseptanse
+**Viktig plattformgrense:** OpenAI dokumenterer at GitHub-importerte plugins som deklarerer MCP-servere kan merkes Desktop only, også med HTTPS. En lokal CLI-test beviser derfor ikke ChatGPT-nettleserstøtte. Se https://learn.chatgpt.com/docs/enterprise/plugin-management#desktop-only-plugins .
 
-OpenAI opplyser at importerte plugins med MCP-serverdeklarasjoner, også eksterne HTTPS-servere, kan bli **Desktop only**. En `.app.json`-referanse alene fjerner ikke denne begrensningen. Se [Desktop-only plugins](https://learn.chatgpt.com/docs/enterprise/plugin-management#desktop-only-plugins).
+Hvis importen gir Desktop only, er nettleserleveransen ikke godkjent. Bruk den ferdige ZIP-pakken gjennom Plugin Creator i riktig arbeidsområde for en privat plugin med remote MCP, og fullfør den beskyttede OAuth-konfigurasjonen. Pakken inneholder allerede alle tre skills. Kontroller at resultatet har arbeidsområdescope og faktisk nettleserstøtte før deling. Alternativt brukes vertens støttede remote-MCP-opprettelsesflyt og de pakkede skillene gjennom den støttede pluginflyten. ChatGPTs dokumenterte inngang er Plugins → Add custom MCP server. Dette er en ny registrering for den nye pluginen, ikke gjenskaping av en gammel personlig plugin eller ny server/Keycloak-klient.
 
-Appreferansen i denne pakken er den dokumenterte måten å gjenbruke en registrert app på, men er ikke et bevis på at GitHub-importen fungerer i nettleseren. Støtte må bekreftes i det faktiske arbeidsområdet:
+Hvis plattformen genererer en appbinding som skal brukes ved videre GitHub-styring, må faktisk app-/arbeidsområde-plugin-ID leses tilbake og verifiseres før den legges i kildepakken. Ikke gjett en ID og ikke anta at en appreferanse alene fjerner Desktop only. En eventuell flytting av eksisterende arbeidsområdeplugin til GitHub må bruke riktig scope og nøyaktig backend-identitet fra det nye oppsettet. Denne registreringen/importen er ikke utført av pakkeutviklingen.
 
-- Åpne ChatGPT i nettleseren i riktig arbeidsområde, kontroller installasjon og eventuell **Desktop only**-merking.
-- Start en ny chat, velg Tactical RMM og kontroller at både norsk skill og de to MCP-verktøyene er tilgjengelige.
-- Fullfør personlig Keycloak-innlogging og eventuell MFA i normal OAuth-flyt.
-- Gjør ett avgrenset, bekreftet lesekall, for eksempel versjon. Kontroller resultatet og eventuelle avvisninger.
-- Gjenta isolasjonstesten med to egne testidentiteter før flerbrukerisolasjon påstås verifisert.
+Kilder: https://developers.openai.com/plugins/build/plugins og https://learn.chatgpt.com/docs/enterprise/plugin-management .
 
-**Hvis pakken blir Desktop only eller appen er utilgjengelig:** Nettleserleveransen er ikke godkjent. Registrer konkret importdiagnostikk og avklar med arbeidsområde-/plattformadministrator om den eksisterende appen kan gjenbrukes i en støttet webtilgjengelig arbeidsområdeplugin. Skill-pakken kan fortsatt vedlikeholdes i GitHub; ikke lov at den kombinerte pluginen fungerer før ny nettlesertest er bestått. Ikke bytt til en lokal løsning uten å informere brukeren. Denne leveransen endrer ingen registrering, publisering eller deling for å omgå begrensningen.
+## Endelig test i ChatGPT
 
-## Oppdatering og tilbakeføring
+Kontroller ny installasjon i riktig arbeidsområde og en ny nettlesersamtale: logo, tre skills, onboarding, personlig OAuth, egen koblingsstatus og et avgrenset lesekall. Bruk egne testidentiteter for management og vanlig rolle før isolasjon påstås verifisert. Skrive-/nøkkeltester krever avtalt testmiljø; kundemaskiner og aktive ansattes koblinger brukes ikke som generell tilkoblingstest.
 
-Skill- og manifestendringer gjennomgås i Git. Øk `version` i både rotmanifestet og kompatibilitetsmanifestet, og oppdater `CHANGELOG.md`. Kjør validator, tester, bygg og hemmelighetsskanning før push. Nytt innhold i marketplace kan også bli importert; behold kun godkjente oppføringer.
+## Sync og tilbakeføring
 
-Administrator åpner **Admin → Plugins → Marketplaces**, velger kilden og bruker **Sync now**. Kontroller rapporten også når overordnet status viser fullført. Sjekk versjonen, lastet skill og faktiske verktøy i en ny chat. En pågående chat er ikke garantert å laste nye skills eller verktøy på nytt.
+Oppdater manifestversjoner, endringslogg og dokumentasjon samlet, og kjør lokale tester før push. Administrator bruker Admin → Plugins → Marketplaces → valgt kilde → Sync now, leser rapporten og kontrollerer versjon, skills og faktisk verktøykatalog i en ny chat. Pågående samtaler er ikke garantert å laste nye komponenter på nytt.
 
-Pakkesynkronisering ruller ikke ut MCP-kode og endrer ikke OAuth eller serverens nøkkeladministrasjon. Nye serververktøy må først være deployet gjennom serverens separate prosess. Les deretter faktisk `tools/list`, vurder skill/parametere og gjennomfør en avgrenset lesetest. Offentlig metadata-probe tester bare katalogen, ikke personlig tilgang.
+MCP-koden har separat utrulling. En pluginoppdatering erstatter ikke backend eller endrer personlige nøkler. Ved serverendring må katalog, skjema og relevante lesekall kontrolleres igjen.
 
-Lagre kjent fungerende Git-commit og testresultat før oppgradering. Ved feil kan administrator peke importen til den kjente commit-en, eller en gjennomgått Git-revert kan rulle tilbake innholdet med ny, høyere pakkeversjon. Synkroniser og test igjen. Ikke slett marketplace for å rulle tilbake: det kan slette importerte plugins. Gjenoppretting av pluginpakken ruller ikke tilbake MCP-server eller kundemaskinhandlinger.
+Lagre kjent fungerende commit og testresultat før oppgradering. Rull eventuelt tilbake kilde med en gjennomgått revert og ny pakkeversjon, eller importer kjent commit etter vertens støttede flyt. Synkroniser og test igjen. Ikke slett marketplace som tilbakeføring; det kan slette importerte plugins. Tilbakeføring av pakken reverserer ikke allerede utførte Tactical-handlinger.

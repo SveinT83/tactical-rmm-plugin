@@ -2,7 +2,7 @@
 
 ## Bekreftet kontrakt
 
-MCP `0.3.2-admin-repair` annonserer seks `tactical-rmm_access_*`-verktøy. Den beskyttede siden er `https://tactical-mcp.tronderdata.no/admin/`. Katalogen, utvalgte kildefiler og den uautentiserte innloggingssiden er kontrollert fra pluginprosjektet. Innlogget funksjon og rolleisolasjon er ikke selvstendig live-testet her.
+MCP `0.4.0-native-api` annonserer seks `tactical-rmm_access_*`-verktøy. Den beskyttede siden er `https://tactical-mcp.tronderdata.no/admin/`. Katalogen, utvalgte kildefiler og den uautentiserte innloggingssiden er kontrollert fra pluginprosjektet. Innlogget funksjon og rolleisolasjon er ikke selvstendig live-testet her.
 
 Teknikeren bruker egen Keycloak/SSO-konto og eventuell MFA. Appen refererer til den eksisterende OAuth-klienten `tactical-chatgpt`, issuer `https://auth.tronderdata.no/realms/tronderdata` og scope `tactical-rmm`. Kildedokumentasjonen oppgir authorization code, PKCE S256 og `client_secret_basic`. Klienthemmelighet, klientpolicy og ny full OAuth-flyt er ikke lest eller endret av pluginutviklingen.
 

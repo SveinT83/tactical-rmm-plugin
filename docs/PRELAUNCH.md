@@ -1,35 +1,38 @@
-# Før-lanseringstest mot MCP 0.3.2
+# Før-lanseringstest mot MCP 0.4.0
 
-Testkandidat: `1.3.0-rc.1` på grenen `test/mcp-0.3.2`. `main` beholder 1.2.0. Ingen lansering eller import i arbeidsområdet er godkjent av denne testen.
+Oppdatert 16. november 2026. Kandidat `1.3.0-rc.2` på `test/mcp-0.3.2`; `main` beholdes som 1.2.0 inntil gjennomgang. Ingen ChatGPT-opplasting, lansering eller produksjonsendring er utført av denne testen.
 
-## Utført her
+## Selvstendig pakke etter slettet personlig plugin
 
-`scripts/prelaunch.py --save` kontrollerer pakken, leser offentlig OAuth-/MCP-metadata og validerer verktøyskjemaene. Det leser den offentlige innloggingssiden, kontrollerer OAuth-avvisning for access users/keys uten legitimasjon og kontrollerer at intern admin-backend ikke er offentlig tilgjengelig.
+Brukeren bekreftet at den gamle personlige ChatGPT-pluginen er slettet. Kandidaten har derfor ingen `.app.json` eller gammel app-/plugin-ID som avhengighet. `mcp.json` og Codex-kompatibel `.mcp.json` beskriver samme eksisterende MCP-endepunkt med provided-klienten `tactical-chatgpt`, `client_secret_basic` og scope `tactical-rmm`.
 
-Fem automatiserte kontroller bestod mot server `0.3.2-admin-repair`. Rapporten ligger i [evidence/prelaunch-readonly.json](evidence/prelaunch-readonly.json). Ingen nøkkeloperasjoner, kundedata eller maskinhandlinger ble kjørt. Testskriptet aksepterer ingen token/nøkkel, følger ikke redirects for disse kontrollene og leser ikke svarbody fra et tilgangsverktøykall.
+Ingen klienthemmelighet følger pakken. Den konfigureres én gang i vertens beskyttede oppsett av administrator ved den nye installasjonen; teknikeren bruker deretter SSO/MFA. Det er ikke nødvendig å gjenskape den gamle pluginen for å ferdigstille eller teste kildepakken.
 
-20 lokale tester bestod. Codex CLI installerte testkandidaten, og alle 18 installerte filer samsvarte med kilden. Testinstallasjonen ble fjernet etterpå. [Pakkerapporten](evidence/prelaunch-package.json) inneholder arkivets sjekksum og egne testgrenser; CLI-installasjon beviser ikke tilkobling eller skillutførelse i ChatGPT.
+## Tester utført her
 
-Utvalgt MCP-kilde og dokumentasjon ble hentet fra GitHub på commit `66b31ef1853f157dc71c887f80c6d73823163fef`. Dette er en kildegjennomgang, ikke en egen kjøring av MCP-prosjektets servertester. Serverutviklingens rapporterte tester holdes atskilt fra tester utført her.
+- **23 lokale tester:** manifester, referanser, tre skills, logo, selvstendig MCP-konfigurasjon, avvist DCR/konfigurasjonsavvik, arkiv og hemmelighetsskanning. Testharnessen nekter skriveverktøy og leser ingen body fra tilgangsverktøykall.
+- **Fem direkte lesende kontroller mot produksjons-MCP:** offentlig katalog, setup-innloggingsside, OAuth-avvisning for access users/keys uten legitimasjon og skjerming av intern admin-backend. Ingen kundedata eller gyldige skrivekall ble hentet/kjørt.
+- **Isolerte serverkildetester:** MCP, HTTP-klient og administrasjon ble kjørt på Linux med Go 1.26.6 fra en ren kildekopi på commit `5b4d4322fb6a86a17ca25a800e9ee98845e08652`. Alle fire testpakker bestod, med 115 beståtte test-/deltesthendelser og ingen hoppede tester. Ingen produksjonslegitimasjon ble gitt til testprosessen. Dette er mock-/kildetester, ikke innloggede kall mot produksjon.
+- **Statisk native inventar:** 328 unike metode-/sti-operasjoner, 291 klassifiserte tekniker-REST-operasjoner og 37 ekskluderte operasjoner med begrunnelse. Alle eksklusjoner hadde forklaring. Dette er ikke en kjøring av samtlige operasjoner.
 
-## Funn som er tatt inn i skillene
+Se [lesende live-rapport](evidence/prelaunch-readonly.json), [pakkerapport](evidence/prelaunch-package.json), [serverkildetester](evidence/mcp-source-tests-0.4.0.json) og [inventarkontroll](evidence/native-inventory-audit.json).
 
-- Den faktiske setup-adressen er `https://tactical-mcp.tronderdata.no/admin/`.
-- Seks dedikerte access-verktøy er tilgjengelige i katalogen, med personlig OAuth.
-- `tactical_user_id` må velges når flere Tactical-kontoer deler e-post og eksisterende verifisert kobling ikke avgjør kontoen.
-- Førstegangskobling for vanlig bruker skjer på siden eller med management-hjelp. Profil-e-post alene gir ingen serverintern nøkkeluthenting.
-- `idempotency_key`, fremtidig RFC3339-utløp innen 366 dager, nøkkel-ID og eksplisitt unlink/revoke er nødvendige krav. Noen krav er bare dokumentert i beskrivelser/servervalidering og ikke fullt uttrykt i JSON-skjemaet.
-- En generell 403 med OAuth-utfordring kan også skyldes utilgjengelig personlig kobling. Skillene skal kontrollere `mapped` og ikke starte en blind innloggingssløyfe.
-- Native nøkkeladministrasjon kan logges på operatørnøkkelens eier i Tactical. MCP-loggen må brukes for faktisk SSO-aktør og målbruker; handlingen skal ikke fremstilles som logget på målbrukeren.
+## Tilpasninger i skillene
 
-## Innloggede tester som gjenstår
+Skillene bruker hele den faktisk annonserte MCP-flaten: search/execute og seks access-verktøy. De beskriver native query/JSON-body, DELETE-body, støttede fil-/multipart-/chunk-formater, offentlige parameternavn, kontovalg, idempotens og strukturerte feil.
 
-Brukeren har opplyst at eksisterende Tactical-tilkobling er valgt og SSO er fullført. De personlige Tactical-verktøyene ble likevel ikke tilgjengelige i denne pågående chatten. Jeg har ikke hentet eller kopiert et OAuth-token fra nettleser, fil, en annen chat eller et annet miljø, og har ikke brukt gatewayen som alternativ identitet.
+MCP 0.4.0 skiller ugyldig SSO, manglende scope, Keycloak-feil og `personal_key_missing`. Rettighetskandidater i generiske 403-feil fremstilles ikke som bekreftede manglende rettigheter. Ved ukjent skriveutfall undersøkes tilstand før nytt forsøk. Rånøkler går aldri gjennom modellen.
 
-Når den eksisterende direkte tilkoblingen er tilgjengelig som verktøy i en ny melding eller samtale, kjør et avgrenset eget statusoppslag og et bekreftet lesekall, for eksempel versjon. Rapporter bare nødvendig status og eventuelle antall. Ikke kjør nøkkelendringer eller maskinhandlinger som en standardtest.
+Ved flere Tactical-kontoer med lik e-post skal `tactical_user_id` velges fra faktisk resultat. Vanlig bruker uten førstegangskobling bruker beskyttet side eller management-hjelp; e-postlikhet alene gir ikke serverintern nøkkeluthenting. Nøkkeladministrasjonens operatørlogging skilles fra vanlig personlig RMM-logging.
 
-Deretter kreves egne testidentiteter med vanlig rolle og management, inkludert en uten førstegangskobling, for rettighets- og isolasjonstest. Skriveflyter krever avtalt testmiljø og uttrykkelig testbestilling. [Funksjonsdekningen](FUNCTIONAL-COVERAGE.md) må også fullføres for kravet om hele brukerens Tactical-funksjonsflate.
+## Tester som først kan gjøres ved installasjon
 
-## Ikke bevist av denne testen
+Siden den tidligere ChatGPT-registreringen er slettet, finnes ingen innlogget tilkobling for kandidaten i denne chatten. Ingen token er hentet fra nettleser, filer, andre chatter eller gateway som omvei. Ny personlig OAuth, faktisk koblingsstatus, rolleisolasjon og nøkkellivssyklus er derfor ikke live-testet her.
 
-Personlig OAuth-flyt, faktisk nøkkelstatus for en bruker, rolleisolasjon, serverintern nøkkellivssyklus, korrekt brukerlogging, full UI-funksjonsdekning, arbeidsområdeimport, automatisk onboarding og ChatGPT-nettleserbruk er ikke godkjent av de fem uautentiserte kontrollene. Lanseringsstatus er derfor **ikke godkjent**.
+Ved første installasjon kontrolleres vertens beskyttede OAuth-oppsett, SSO/MFA, logo, onboarding, alle tre skills, de faktiske verktøyene og et avgrenset personlig lesekall. Bruk egne testidentiteter for vanlig rolle og management, inkludert en uten førstegangskobling. Nøkkelhandlinger og maskinskriving krever eget testmiljø og konkret testbestilling.
+
+GitHub-import med MCP kan bli Desktop only. Nettleserstøtte må kontrolleres i faktisk ChatGPT-arbeidsområde etter den støttede opprettelses-/importflyten; lokale tester eller en ZIP beviser ikke dette. [Arbeidsområdeveiledningen](../plugins/tactical-rmm/docs/WORKSPACE.md) beskriver nødvendige neste steg.
+
+## Lanseringsgrense
+
+Full brukerrettighetsisolasjon og GUI-paritet er ikke godkjent. Interaktiv terminal, native livestrømmer og fjernskrivebord krever fortsatt egne sesjonsintegrasjoner i MCP. [Dekningsrapporten](FUNCTIONAL-COVERAGE.md) skiller registrerte REST-kontrakter fra faktisk testet og manglende funksjon. Kandidaten er klar for sluttkontroll av installasjon, ikke en erklæring om full lanseringsgodkjenning.

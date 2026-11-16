@@ -5,7 +5,7 @@ description: Bruk ved installasjon, første tilkobling, SSO-innlogging eller man
 
 # Kom i gang med Tactical RMM
 
-Pluginen refererer allerede til den registrerte Tactical RMM-appen. Når arbeidsområdet har gitt tilgang til appen, skal teknikeren kunne bruke vertens tilkoblingsknapp og logge inn med egen Keycloak-konto, eventuell MFA og OAuth-samtykke. Ikke be teknikeren skrive inn MCP-serveradresse, klient-ID, klienthemmelighet eller Tactical API-nøkkel. Hvis appavhengigheten ikke er tilgjengelig, forklar at arbeidsområdeadministrator må gjøre den eksisterende appen tilgjengelig. Ikke opprett en dublett.
+Pluginen deklarerer den eksisterende Tactical RMM MCP-serveren direkte. Den krever ingen tidligere personlig ChatGPT-plugin eller app-ID. Når verten/arbeidsområdet har konfigurert pluginens OAuth-tilkobling, bruker teknikeren vertens tilkoblingsknapp med egen Keycloak-konto, eventuell MFA og samtykke. Ikke be teknikeren skrive MCP-adresse, klienthemmelighet eller Tactical API-nøkkel i chatten. Ved manglende hostkonfigurasjon må administrator bruke den forberedte MCP-/OAuth-konfigurasjonen i vertens beskyttede oppsett. Ikke opprett en ny MCP-server eller Keycloak-klient.
 
 Denne skillen er registrert som pakkens onboarding-skill. Verten styrer når setup startes og når innloggingsdialogen vises. Skillen kan ikke garantere automatisk innlogging, arbeidsområderettigheter eller nettleserstøtte.
 
@@ -17,7 +17,7 @@ Denne skillen er registrert som pakkens onboarding-skill. Verten styrer når set
 4. Når faktisk status bekrefter manglende personlig nøkkelkobling, si: «Innloggingen er gjennomført, men en administrator må fullføre koblingen til din personlige Tactical RMM-tilgang.» Forklar deretter en eventuell verifisert selvbetjeningsmulighet; den eksakte forklaringen gir ikke i seg selv bevis på at nøkkelen allerede finnes eller er koblet.
 5. Hvis serveren bekrefter at kobling finnes, skill dette fra bekreftet fungerende Tactical-tilgang. Oppgi bare det statusverktøyet faktisk har kontrollert. En opprettet kobling er ikke en ferdig test av alle rettigheter.
 
-En 403 med OAuth-utfordringsheader er heller ikke alene bevis på utløpt innlogging. Kildekoden kan gi en slik utfordring også når den personlige koblingen mangler. Bruk tilgjengelig `tactical-rmm_access_users` for å avklare `mapped` før gjentatt innlogging. Unngå en innloggingssløyfe når SSO allerede er gyldig.
+MCP 0.4.0 skiller `personal_key_missing`, `oauth_token_invalid`, `oauth_scope_missing` og `identity_provider_unavailable`. Bruk den bekreftede koden fremfor HTTP-status alene. `personal_key_missing` skal gi forklaringen og setup-lenken, ikke gjentatt innlogging. Ved uklar eller eldre 403 kan tilgjengelig `tactical-rmm_access_users` avklare `mapped`. Unngå en innloggingssløyfe når SSO allerede er gyldig.
 
 ## Vis riktig setup-lenke
 
@@ -29,7 +29,7 @@ Hvis status ikke inneholder en verifisert URL og ingen slik URL er dokumentert, 
 
 ## Selvbetjening og administrasjon
 
-MCP 0.3.2 annonserer `tactical-rmm_access_users` for koblingsstatus og egne access-verktøy for personlige koblinger. Kontroller gjeldende katalog før bruk. En vanlig bruker skal bare få egen status og egen beskyttede oppsettsside; management kan få andre brukere. Verktøyet kan derfor returnere en videre brukeroversikt for management enn for vanlig bruker. Ikke vis eller lagre en unødvendig oversikt i samtalen.
+MCP 0.4.0 annonserer `tactical-rmm_access_users` for koblingsstatus og egne access-verktøy for personlige koblinger. Kontroller gjeldende katalog før bruk. En vanlig bruker skal bare få egen status og egen beskyttede oppsettsside; management kan få andre brukere. Verktøyet kan derfor returnere en videre brukeroversikt for management enn for vanlig bruker. Ikke vis eller lagre en unødvendig oversikt i samtalen.
 
 Vanlig bruker må registrere den første nøkkelen på den beskyttede siden eller få hjelp av management før serverintern nøkkeluthenting/opprettelse for egen konto kan brukes. Flere Tactical-kontoer kan dele samme e-post; kontoen skal da velges uttrykkelig fra faktisk resultat. `mapped` betyr at en kobling finnes, ikke at alle rettigheter eller datakall er testet.
 

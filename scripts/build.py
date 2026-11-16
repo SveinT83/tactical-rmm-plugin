@@ -27,7 +27,8 @@ def build(root=ROOT):
         require(z.testzip() is None, "Corrupt archive")
         names = set(z.namelist())
         require(names == {"tactical-rmm/" + p.relative_to(package).as_posix() for p in files}, "Archive/source mismatch")
-        require("tactical-rmm/.app.json" in names, "Hidden app reference missing")
+        require("tactical-rmm/.app.json" not in names, "Deleted app dependency included")
+        require({"tactical-rmm/mcp.json", "tactical-rmm/.mcp.json"} <= names, "MCP configuration missing")
         require(not any("marketplace" in n or ".." in Path(n).parts for n in names), "Invalid archive contents")
         for name in names:
             data = z.read(name)

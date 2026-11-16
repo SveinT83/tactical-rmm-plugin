@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "tactical-rmm": {
+      "url": "https://tactical-mcp.tronderdata.no/chatgpt/mcp",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "provided",
+              "clientId": "tactical-chatgpt",
+              "tokenEndpointAuthMethod": "client_secret_basic"
+            },
+            "baseScopes": [
+              "tactical-rmm"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

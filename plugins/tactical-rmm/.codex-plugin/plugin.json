@@ -1,16 +1,15 @@
 {
   "name": "tactical-rmm",
-  "version": "1.3.0-rc.1",
+  "version": "1.3.0-rc.2",
   "description": "Bruk Tactical RMM med personlig Keycloak-innlogging og egne Tactical-rettigheter.",
   "author": {
     "name": "Trønder Data"
   },
   "skills": "./skills/",
-  "apps": "./.app.json",
   "interface": {
     "displayName": "Tactical RMM",
     "shortDescription": "Drift med personlig tilgang",
-    "longDescription": "Personlig Tactical RMM-tilgang med SSO, oppsett, drift og serverstyrt nøkkeladministrasjon. Skillene bruker faktiske verktøy og serverens tilgangskontroller. Testkandidat for MCP 0.3.2; full funksjonsdekning og nettleserflyt er ikke godkjent ennå.",
+    "longDescription": "Selvstendig Tactical RMM-plugin med eksisterende HTTPS MCP-server og personlig Keycloak/SSO. Oppsett, native REST-funksjoner, filer og serverstyrt nøkkeladministrasjon. Testkandidat mot MCP 0.4.0; sluttkontroll av OAuth og ChatGPT-nettleser gjenstår.",
     "developerName": "Trønder Data",
     "category": "Developer Tools",
     "capabilities": [
@@ -21,5 +20,6 @@
     "logo": "./assets/tactical-rmm.png",
     "composerIcon": "./assets/tactical-rmm.png"
   },
-  "onboardingSkill": "./skills/tactical-rmm-setup/SKILL.md"
+  "onboardingSkill": "./skills/tactical-rmm-setup/SKILL.md",
+  "mcpServers": "./.mcp.json"
 }

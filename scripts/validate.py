@@ -14,7 +14,6 @@ import jsonschema
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-APP_ID = "asdk_app_6af232dfb75c81919191e1ab5b5fd9c0"
 SEMVER = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?\Z")
 IGNORED = {".git", ".venv", "dist", "build", "node_modules", "__pycache__", ".pytest_cache"}
 
@@ -114,11 +113,24 @@ def validate(root=ROOT):
     compatibility = read_json(package / ".codex-plugin/plugin.json")
     for k in ["name", "version", "description", "author"]:
         require(compatibility[k] == manifest[k], f"Compatibility mismatch: {k}")
-    for k in ["apps", "interface", "onboardingSkill"]:
+    for k in ["interface", "onboardingSkill"]:
         require(compatibility[k] == extension[k], f"OpenAI overlay mismatch: {k}")
-    apps = read_json(contained(package, extension["apps"]))["apps"]
-    require(apps == {"tactical-rmm": {"id": APP_ID, "required": True}}, "Unverified app dependency")
-    require(not any((package / f).exists() for f in ["mcp.json", ".mcp.json"]), "Do not register a duplicate MCP connection")
+    require("apps" not in extension and "apps" not in compatibility and not (package / ".app.json").exists(), "Deleted app dependency must not be restored")
+    mcp = read_json(package / "mcp.json")
+    require(set(mcp["mcpServers"]) == {"tactical-rmm"}, "Expected one remote MCP server")
+    server = mcp["mcpServers"]["tactical-rmm"]
+    require(set(server) == {"type", "url", "extensions"}, "Static auth headers or extra MCP fields are not allowed")
+    # OpenAI documents vendor auth extensions that the portable base schema
+    # does not yet admit. Validate the standard transport projection against
+    # the unmodified published schema, then validate the documented extension.
+    transport = json.loads(json.dumps(mcp))
+    transport["mcpServers"]["tactical-rmm"].pop("extensions", None)
+    jsonschema.Draft202012Validator(read_json(root / "schemas/mcp.schema.json")).validate(transport)
+    require(server["type"] == "streamable-http" and server["url"] == "https://tactical-mcp.tronderdata.no/chatgpt/mcp", "Wrong MCP transport or endpoint")
+    auth = {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "client_secret_basic"}, "baseScopes": ["tactical-rmm"]}
+    require(server.get("extensions") == {"com.openai": {"auth": auth}}, "Unexpected OpenAI OAuth configuration")
+    legacy = read_json(contained(package, compatibility["mcpServers"]))
+    require(legacy == {"mcpServers": {"tactical-rmm": {"url": server["url"], "extensions": server["extensions"]}}}, "Legacy MCP configuration mismatch")
     skills = contained(package, compatibility["skills"])
     skill_paths = sorted(skills.glob("*/SKILL.md"))
     require({p.parent.name for p in skill_paths} == {"tactical-rmm", "tactical-rmm-admin", "tactical-rmm-setup"}, "Expected operational, administration and setup skills")
@@ -150,6 +162,7 @@ def validate(root=ROOT):
         require(not path.is_symlink(), "Package contains symlink")
         require(not any(p in IGNORED for p in path.relative_to(package).parts), "Generated/local file in package")
     connection = read_json(root / "config/connection.json")
+    require(connection["auth"] == auth, "Connection reference differs from runtime OAuth config")
     require(connection["auth"] == {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "client_secret_basic"}, "baseScopes": ["tactical-rmm"]}, "OAuth contract changed")
     require(connection["mcpUrl"] == "https://tactical-mcp.tronderdata.no/chatgpt/mcp", "Wrong MCP endpoint")
     require(connection["issuer"] == "https://auth.tronderdata.no/realms/tronderdata", "Wrong issuer")

@@ -4,6 +4,14 @@ Kravet fra brukeren er at hver person skal kunne gjøre alt vedkommende har rett
 
 En operasjon må kontrolleres gjennom hele kjeden: faktisk arbeidsflyt i installert Tactical-versjon, tilgjengelig API eller annen støttet integrasjon, MCP-verktøy og parametere, korrekt personlig autorisasjon, utførelse og verifiserbart resultat. Antall verktøy eller genererte endepunkter er ikke et dekningsmål alene.
 
+## Kontrollert native inventar i MCP 0.4.0
+
+Utvalgt MCP-kilde på commit `5b4d4322fb6a86a17ca25a800e9ee98845e08652` er gjennomgått og serverkildens tester er kjørt isolert. Den statiske produksjonsskjemakopien har 328 unike operasjoner: 291 klassifiserte tekniker-REST-operasjoner og 37 begrunnede eksklusjoner for agent-/installerprotokoll eller separate autentiseringsflyter.
+
+REST-områdene omfatter blant annet accounts (32), agents (79), alerts (12), automation (23), checks (10), clients (17), core (35), logs (6), reporting (41), scripts (12), services (4), software (8), tasks (6) og winupdate (4), samt to øvrige rot-/API-operasjoner. Tallene er kildeklassifisering, ikke beståtte personlige produksjonskall eller garantert lisens-/rettighetstilgang. Se [maskinlesbar inventarkontroll](evidence/native-inventory-audit.json).
+
+**Kjente faktiske sesjonsmangler:** interaktiv WebSocket-/terminalfunksjon, native live-dashboardstrømmer og MeshCentral-fjernskrivebord. REST-kommandoer og lest tilkoblingsmetadata erstatter ikke disse funksjonene.
+
 ## Områder som må gjennomgås
 
 Dette er en arbeidsliste, som må kompletteres mot det faktiske installerte grensesnittet og brukerens rettigheter. Radene er ikke en komplett inventarliste eller bekreftelse på at en gitt funksjon er tilgjengelig for enhver bruker.
@@ -17,7 +25,7 @@ Dette er en arbeidsliste, som må kompletteres mot det faktiske installerte gren
 | Skript og kommandoer | Bibliotek, kontekst, utførelse, timeout og resultat | Kommandoskjema testet lokalt; ingen produksjonskjøring |
 | Patching og omstart | Status, godkjenning, kjøring og oppfølging | Katalogtreff for Windows-oppdateringer; ingen produksjonsendring |
 | Programvare og systemdrift | Faktiske installerte UI-handlinger og API-/verktøystøtte | Utestet |
-| Fjernfunksjoner og interaktive flater | Faktisk støtte for relevante fjern-/terminal-/filflyter der de finnes | Utestet; ikke antatt dekket av generell HTTP-utførelse |
+| Fjernfunksjoner og interaktive flater | Faktisk støtte for relevante fjern-/terminal-/filflyter der de finnes | Kjent mangel for interaktiv terminal/live-strømmer og skrivebordsstyring; egen personlig sesjonsintegrasjon kreves |
 | Rapporter, historikk og eksport | Faktiske visninger, data og nedlastinger | Utestet |
 | Brukere, roller og innstillinger | Tillatte konto- og systemfunksjoner | Utestet som samlet Tactical-område |
 | Personlige MCP-koblinger | Status, metadata, opprettelse, kobling, rotasjon, frakobling og tilbakekall | Katalog og kilde gjennomgått; innlogget livssyklus utestet |
@@ -34,4 +42,4 @@ Skriveflyter, restart, patching og nøkkellivssyklus skal testes i et avtalt tes
 
 ## Lanseringsstatus
 
-**Full dekning er ikke bekreftet.** Nåværende før-lanseringstest gir bevis for pakketilstand, katalog, offentlig innloggingsside og OAuth-avvisning. Den godkjenner ikke funksjonsdekning eller brukerrettighetsisolasjon. MCP utvikles fortsatt; kjør testen på nytt mot den endelige katalogen og fullfør rolle-/arbeidsflyttestene før dette akseptansemålet kan godkjennes.
+**Full GUI-dekning er ikke bekreftet.** Nåværende før-lanseringstest gir bevis for pakketilstand, katalog, offentlig innloggingsside og OAuth-avvisning. Den godkjenner ikke funksjonsdekning eller brukerrettighetsisolasjon. MCP utvikles fortsatt; kjør testen på nytt mot den endelige katalogen og fullfør rolle-/arbeidsflyttestene før dette akseptansemålet kan godkjennes.

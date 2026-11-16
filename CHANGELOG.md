@@ -1,5 +1,13 @@
 # Endringslogg
 
+## 1.3.0-rc.2 – 2026-11-16
+
+- Selvstendig remote MCP-konfigurasjon med eksisterende endepunkt og provided OAuth-klient; bindingen til den slettede personlige pluginen er fjernet.
+- Tilpasset MCP `0.4.0-native-api`, inkludert native query/body, binær/multipart-overføring, kontraktshint og strukturerte feil.
+- Statiske inventarkontroller bekrefter 328 operasjoner, 291 klassifiserte tekniker-REST-operasjoner og 37 begrunnede eksklusjoner.
+- Kjente mangler for interaktiv terminal, live-strømmer og fjernskrivebord holdes synlige; full GUI-dekning er ikke påstått.
+- Isolerte MCP-/klient-/admintester kjørt fra kilde på Linux uten produksjonslegitimasjon. Ny personlig OAuth og ChatGPT-nettleser sluttkontrolleres ved installasjon.
+
 ## 1.3.0-rc.1 – 2026-11-15
 
 - Testkandidat på egen gren for MCP `0.3.2-admin-repair`; ingen automatisk lansering til `main`.

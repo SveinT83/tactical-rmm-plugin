@@ -1,0 +1,33 @@
+{
+  "source_commit": "5b4d4322fb6a86a17ca25a800e9ee98845e08652",
+  "toolchain": "go1.26.6",
+  "packages": [
+    "./internal/mcp/...",
+    "./internal/client/...",
+    "./internal/admin/..."
+  ],
+  "passed": true,
+  "passed_test_events": 115,
+  "failed_tests": [],
+  "skipped_tests": [],
+  "package_results": [
+    {
+      "package": "tactical-rmm-pp-cli/internal/mcp/cobratree",
+      "status": "pass"
+    },
+    {
+      "package": "tactical-rmm-pp-cli/internal/mcp",
+      "status": "pass"
+    },
+    {
+      "package": "tactical-rmm-pp-cli/internal/client",
+      "status": "pass"
+    },
+    {
+      "package": "tactical-rmm-pp-cli/internal/admin",
+      "status": "pass"
+    }
+  ],
+  "production_credentials_supplied": false,
+  "live_authenticated_mcp_tested": false
+}

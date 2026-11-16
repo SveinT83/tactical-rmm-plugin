@@ -7,7 +7,7 @@ description: Bruk ved bestilt selvbetjening for egen Tactical-tilgang eller mana
 
 Ønsket arbeidsflyt er at administrator kan bestille brukeradministrasjon i chatten. MCP-serveren oppretter eller henter en personlig nøkkel i Tactical og lagrer den på riktig bruker direkte på serversiden. Chatten skal bare motta brukerreferanse, status og eventuelt en bekreftet administrasjonslenke.
 
-**Verifisert kontrakt:** Seks tilgangsverktøy finnes i den offentlige katalogen på MCP 0.3.2, og den beskyttede siden er kildebekreftet. Innlogget funksjon, rolleisolasjon og nøkkelhandlinger er ikke live-testet fra denne chatten. Skillen gir ikke tilgang og implementerer ingen serverfunksjon. Ikke påstå at en nøkkel er opprettet, kopiert, lagret eller fornyet før et faktisk verktøy og en resultatkontroll bekrefter det. Les [verktøy og betingede krav](references/access-tools.md).
+**Verifisert kontrakt:** Seks tilgangsverktøy finnes i den offentlige katalogen på MCP 0.4.0, og den beskyttede siden er kildebekreftet. Innlogget funksjon, rolleisolasjon og nøkkelhandlinger er ikke live-testet fra denne chatten. Skillen gir ikke tilgang og implementerer ingen serverfunksjon. Ikke påstå at en nøkkel er opprettet, kopiert, lagret eller fornyet før et faktisk verktøy og en resultatkontroll bekrefter det. Les [verktøy og betingede krav](references/access-tools.md).
 
 ## Kontroller verktøy og fullmakt
 

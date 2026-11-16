@@ -1,4 +1,4 @@
-# MCP 0.3.2: kontrakt og gjenværende akseptanse
+# MCP 0.4.0: kontrakt og gjenværende akseptanse
 
 Dette er kontrakten som er observert i offentlig verktøykatalog og gjennomgått i utvalgt MCP-kilde. Det er ikke en godkjenning av innlogget funksjon, flerbrukerisolasjon eller full dekning av Tactical RMM.
 

@@ -1,6 +1,6 @@
-# Bekreftet katalog: MCP 0.3.2
+# Bekreftet katalog: MCP 0.4.0
 
-Følgende er lest fra den kjørende MCP-serverens `tools/list` 15. november 2026. Les alltid gjeldende skjema før bruk; tabellen er et øyeblikksbilde. Vertens navnerom kan komme foran verktøynavnet.
+Følgende er lest fra den kjørende MCP-serverens `tools/list` 16. november 2026. Les alltid gjeldende skjema før bruk; tabellen er et øyeblikksbilde. Vertens navnerom kan komme foran verktøynavnet.
 
 | Verktøy | Virkning og krav |
 | --- | --- |

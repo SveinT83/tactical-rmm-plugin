@@ -1,6 +1,6 @@
 # Bekreftet tilkobling og oppsettsadresse
 
-Eksisterende app-ID er `asdk_app_6af232dfb75c81919191e1ab5b5fd9c0`. Den refereres av pakken; plugininstallasjon oppretter ingen ny MCP-server eller Keycloak-klient.
+Pakken er selvstendig med `mcp.json` og en Codex-kompatibel `.mcp.json`. Ingen app-ID fra den slettede personlige pluginen brukes. Den eksisterende MCP-serveren og forhåndsregistrerte OAuth-klienten gjenbrukes; ingen server eller Keycloak-klient opprettes av pakken.
 
 MCP-endepunkt: `https://tactical-mcp.tronderdata.no/chatgpt/mcp`.
 Issuer: `https://auth.tronderdata.no/realms/tronderdata`.
