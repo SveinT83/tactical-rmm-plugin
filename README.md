@@ -4,7 +4,7 @@
 
 Selvstendig plugin med tre norske skills og direkte tilkobling til eksisterende `https://tactical-mcp.tronderdata.no/chatgpt/mcp`. Den slettede personlige ChatGPT-pluginen brukes ikke som avhengighet. Ingen ny MCP-server eller Keycloak-klient opprettes.
 
-Repo: [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin). Testarbeidet ligger på `test/mcp-0.3.2` i utkast-PR #1; grennavnet beholdes selv om kandidaten nå gjelder MCP 0.4.0. `main` endres først etter gjennomgang.
+Repo: [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin). Kandidaten distribueres fra `main` for import i ChatGPT. Versjonen er fortsatt en testkandidat; personlig OAuth og nettleserflyt sluttkontrolleres ved installasjon.
 
 ## Innhold
 
@@ -61,7 +61,7 @@ Målet er at brukeren skal kunne gjøre alt vedkommende har rettigheter til i Ta
 
 ## GitHub, oppdatering og tilbakeføring
 
-For import: Source `https://github.com/SveinT83/tactical-rmm-plugin`, tom Path og valgt branch/commit. Velg testgrenen bare for kandidatkontroll; bruk gjennomgått hovedgren ved vanlig utrulling. Arbeidsområdeadministrator setter roller, installasjons- og autentiseringspolicy i ChatGPT.
+For import: Source `https://github.com/SveinT83/tactical-rmm-plugin`, tom Path og Branch `main`. Arbeidsområdeadministrator setter roller, installasjons- og autentiseringspolicy i ChatGPT.
 
 Oppdater begge manifester, konfigurasjoner og endringslogg samlet. Kjør tester før push, og bruk deretter **Sync now** i arbeidsområdets marketplace-administrasjon. Kontroller rapport, versjon og faktiske skills/verktøy i en ny chat; en pågående samtale kan kreve ny oppstart.
 

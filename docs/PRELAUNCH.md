@@ -1,6 +1,6 @@
 # Før-lanseringstest mot MCP 0.4.0
 
-Oppdatert 16. november 2026. Kandidat `1.3.0-rc.2` på `test/mcp-0.3.2`; `main` beholdes som 1.2.0 inntil gjennomgang. Ingen ChatGPT-opplasting, lansering eller produksjonsendring er utført av denne testen.
+Oppdatert 16. november 2026. Kandidat `1.3.0-rc.2` distribueres fra `main` for import. Testene ble opprinnelig kjørt på kandidatgrenen før sammenslåing. Ingen ChatGPT-opplasting, lansering eller produksjonsendring er utført av denne testen.
 
 ## Selvstendig pakke etter slettet personlig plugin
 

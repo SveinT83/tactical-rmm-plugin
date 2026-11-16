@@ -19,7 +19,7 @@
   "archive": {
     "path": "dist/tactical-rmm-1.3.0-rc.2.zip",
     "files": 20,
-    "sha256": "06eee05b55521571fc849ddc1f8e4bd187d9355d3c7941d8062e330146d0e2da"
+    "sha256": "5c1d1ecbb00aef8f7189038d4389bae94f06f3b1b537bd4643b4e54be559ed32"
   },
   "isolated_server_source_tests": "docs/evidence/mcp-source-tests-0.4.0.json",
   "native_inventory_audit": "docs/evidence/native-inventory-audit.json",
@@ -28,5 +28,7 @@
   "key_mutations_performed": false,
   "customer_machine_actions_performed": false,
   "full_gui_coverage_verified": false,
-  "launch_approved": false
+  "launch_approved": false,
+  "distribution_branch": "main",
+  "post_test_changes": "Only import-branch documentation changed; package rebuilt and inspected."
 }

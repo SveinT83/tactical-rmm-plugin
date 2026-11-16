@@ -20,7 +20,7 @@ Deretter bruker teknikeren egen SSO, eventuell MFA og samtykke. En manglende per
 
 Repo: `https://github.com/SveinT83/tactical-rmm-plugin`.
 Marketplace: `.agents/plugins/marketplace.json`, relativt til repoets rot.
-Testkandidat: grenen `test/mcp-0.3.2` har kandidaten for MCP 0.4.0; grennavnet beholdes for den eksisterende utkast-PR-en. `main` oppdateres først etter gjennomgang.
+Importgren: `main`, med kandidat 1.3.0-rc.2 for MCP 0.4.0. Kandidatstatus betyr at personlig OAuth og faktisk nettleserinstallasjon fortsatt skal sluttkontrolleres.
 
 Arbeidsområdeadministrator bruker Admin → Plugins → Add → Import marketplace, repo-URL som Source, tom Path og valgt branch/commit. Les importresultatet og sett arbeidsområdets rolle-/installasjons-/autentiseringsinnstillinger. GitHub-import gir ikke automatisk rettigheter i Tactical.
 
