@@ -1,6 +1,6 @@
 {
-  "name": "tactical-rmm",
-  "version": "1.3.0-rc.4",
+  "name": "dev-6afafd3b578c8191a62956239872dd3b",
+  "version": "1.4.0",
   "description": "Bruk Tactical RMM med personlig Keycloak-innlogging og egne Tactical-rettigheter.",
   "author": {
     "name": "Trønder Data"
@@ -9,7 +9,7 @@
   "interface": {
     "displayName": "Tactical RMM",
     "shortDescription": "Drift med personlig tilgang",
-    "longDescription": "Tactical RMM med tre norske ferdigheter for drift, personlig tilgang og oppsett. Bruker eksisterende MCP-server. Testkandidat: kontokoblingen for SSO i ChatGPT er ennå ikke ferdig konfigurert.",
+    "longDescription": "Bruk Tactical RMM gjennom MCP med personlig Keycloak SSO og egne rettigheter. Oppsett, drift og serverstyrt administrasjon av personlig tilgang.",
     "developerName": "Trønder Data",
     "category": "Developer Tools",
     "capabilities": [
@@ -22,5 +22,10 @@
     "websiteURL": "https://tactical-mcp.tronderdata.no/admin/"
   },
   "onboardingSkill": "./skills/tactical-rmm-setup/SKILL.md",
-  "mcpServers": "./.mcp.json"
+  "apps": "./.app.json",
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/tactical-rmm-setup/SKILL.md"
+    }
+  }
 }

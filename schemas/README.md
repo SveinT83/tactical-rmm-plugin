@@ -1,3 +1,7 @@
+# Skjemareferanser og aktiv validering
+
+Gjeldende kilde bruker bare nativt `.codex-plugin/plugin.json` og den registrerte `.app.json`, med faktisk `pluginId` i markedsplassen. `scripts/validate.py` validerer denne identiteten og alle lokale referanser direkte. De portable schema-filene er beholdt som historiske referanser; de er ikke aktivt installasjonsformat for 1.4.0. Eldre notater nedenfor beskriver tidligere kandidater.
+
 # Valideringsschema
 
 `plugin.schema.json` er hentet uendret fra [Agent Plugins 1.0.0](https://agent-plugins.org/schemas/1.0.0/plugin.schema.json) 14. november 2026. Den versjonerte kopien lar pakkens tester kjøre uten nettverk. Schemaets `extensions` er åpne; `scripts/validate.py` kontrollerer derfor også prosjektets appreferanse, OpenAI-presentasjon, kompatibilitet og filstier eksplisitt.

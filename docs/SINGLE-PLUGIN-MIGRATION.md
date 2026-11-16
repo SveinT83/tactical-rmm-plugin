@@ -1,47 +1,51 @@
 # Én Tactical RMM-plugin med SSO og GitHub-oppdateringer
 
-Dette erstatter den tidligere planen om en GitHub-wrapper som inkluderer en
-separat SSO-plugin. Brukeren har valgt én kanonisk SSO-plugin, overtatt av GitHub,
-med navn Tactical RMM og de tre eksisterende ferdighetene.
+## Verifisert nå
 
-## Verifisert registrering 16. november 2026
+Brukeren har delt den eksisterende SSO-pluginen til arbeidsområdet. Plugin Creator
+bekrefter scope `WORKSPACE`, discoverability `LISTED` og workspace-ID
+`c32d88fa-1324-44b1-9fce-9d7a166164a4`. Ingen ny plugin er opprettet av migreringen.
 
-Plugin Creator har lest den nye registreringens metadata og begge kildefiler:
+| Identitet | Verifisert verdi |
+| --- | --- |
+| Kanonisk plugin-ID | `plugin_asdk_app_6afafd3b578c8191a62956239872dd3b` |
+| Teknisk navn | `dev-6afafd3b578c8191a62956239872dd3b` |
+| App-ID | `asdk_app_6afafd3b578c8191a62956239872dd3b` |
+| Release før GitHub-overtakelse | `PluginRelease_9e484e010ab8819183571e5bfec67887`, versjon 1.0.0 |
 
-- Plugin-ID: `plugin_asdk_app_6afafd3b578c8191a62956239872dd3b`.
-- Teknisk navn: `dev-6afafd3b578c8191a62956239872dd3b`.
-- App-ID: `asdk_app_6afafd3b578c8191a62956239872dd3b`.
-- Scope/discoverability: `USER` / `PRIVATE`.
-- Versjon: `1.0.0`. Brukeren bekrefter fungerende personlig SSO.
+Kildemetadata og `.app.json` er lest direkte og registrert i
+[evidensfilen](evidence/sso-registration.json). Brukeren bekrefter fungerende
+personlig SSO. Keycloak er offentlig klient med påkrevd PKCE S256 og ingen
+klienthemmelighet. Eldre personlige/deklarerte klientreferanser skal ikke brukes.
 
-Det er foreløpig en personlig registrering. Ikke bruk denne plugin-ID-en som
-`pluginId` i arbeidsområdets markedsplass før arbeidsområdescope er bekreftet.
-OpenAIs GitHub-overtakelse krever samme arbeidsområde og nøyaktig teknisk navn.
+## Klargjort GitHub-kilde
 
-## Neste steg
+Versjon 1.4.0 bruker den kanoniske pluginens faktiske ID som marketplace-`pluginId`.
+Marketplace- og manifestnavn samsvarer nøyaktig med registreringen. Visningsnavnet
+blir Tactical RMM. Samme appbinding er bevart; tre ferdigheter og original logo
+følger kilden. Ingen ekstra wrapper eller rå MCP-deklarasjon er med.
 
-1. Administrator gjør SSO-koblingen tilgjengelig for Trønder Data gjennom
-   arbeidsområdets publiseringsflyt. Hvis det opprettes en ny arbeidsområde-ID,
-   må den leses fra faktisk metadata; ikke anta at den personlige ID-en beholdes.
-2. Les metadata og kilde på nytt. Kontroller `WORKSPACE`, riktig workspace-ID,
-   faktisk teknisk navn, plugin-ID, app-ID og versjon.
-3. Klargjør GitHub-overtakelse med verifisert `pluginId` og samme tekniske navn
-   i markedsplass og manifest. Bevar den kanoniske appkoblingen og SSO-oppsettet.
-   Ikke opprett en ny wrapper. `scripts/bind_app.py` implementerer den eldre
-   wrapper-overgangen og skal ikke kjøres uendret for denne migreringen.
-4. Kontroller ferdigheter, logo, metadata, bygg og faktisk klient. Push ferdig
-   kilde til `main`; administrator synkroniserer og kontrollerer at samme
-   kanoniske plugin-ID nå styres fra GitHub og fortsatt har tilknyttede kontoer.
-5. Ta den gamle importerte wrapperen
-   `Plugin_960c953284a0819184889146d979392f` ut av bruk som en separat handling.
-   Fjernet marketplace-entry etterlater workspace-kopien som «No longer in source»;
-   den blir ikke automatisk slettet. Ikke slett hele markedsplassen eller den
-   nye underliggende SSO-koblingen.
+Den tidligere wrapper-hjelperen `scripts/bind_app.py` er fjernet. Validatoren
+avviser manglende/feil `pluginId`, en annen teknisk identitet, personlig/feil
+arbeidsområde, andre app-ID-er og ekstra marketplace-oppføringer.
 
-Intern publisering og arbeidsområdetilgang kan ikke utføres med de tilgjengelige
-Plugin Creator-verktøyene her. Ingen GitHub-overtakelse eller opprydding i
-arbeidsområdet er utført ennå. Klienten i Keycloak er allerede offentlig,
-med PKCE S256 og uten behov for klienthemmelighet.
+## Gjenstående handlinger i arbeidsområdet
 
-Kilder: [GitHub-overtakelse](https://learn.chatgpt.com/docs/enterprise/plugin-management#move-an-existing-plugin-to-github-management),
-[publisering i arbeidsområdet](https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt).
+1. Administrator bruker **Synkroniser nå** på eksisterende marketplace, branch `main`.
+2. Les importresultatet. Det må vise at samme eksisterende SSO-plugin-ID nå
+   styres fra GitHub. Kontroller versjon 1.4.0, visningsnavn, logo, tre ferdigheter
+   og tilknyttet konto. En kilde-push eller lokal klientkontroll er ikke denne testen.
+3. Test et avgrenset lesekall med den kanoniske pluginen i ny chat.
+4. Ta gammel wrapper `Plugin_960c953284a0819184889146d979392f` ut av bruk og fjern
+   den gamle oppføringen gjennom støttet administrasjon. Den etterlates som
+   **No longer in source**, og slettes ikke automatisk ved synk. Ikke slett hele
+   markedsplassen eller den kanoniske SSO-pluginen/kontokoblingen.
+5. Kontroller at ansatte bare finner og bruker én Tactical RMM-plugin. Bekreft
+   personlig kontotilkobling og Tactical-rettigheter med testidentiteter.
+
+Verktøyene her kan ikke utføre workspace-sync eller slette/deaktivere en hel
+arbeidsområdeoppføring. Disse handlingene er ikke rapportert utført. Installerte
+kopier og arbeidsområdeoppføringer er ulike; en personlig avinstallering alene
+ville ikke oppfylle målet om én oppføring for alle ansatte.
+
+Kilde: https://learn.chatgpt.com/docs/enterprise/plugin-management#move-an-existing-plugin-to-github-management .

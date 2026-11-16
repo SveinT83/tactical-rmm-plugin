@@ -1,5 +1,9 @@
 # Før-lanseringstest mot MCP 0.4.0
 
+## Gjeldende pakkekobling 1.4.0
+
+SSO-pluginen er nå verifisert som WORKSPACE/LISTED i Trønder Data. Brukeren bekrefter personlig innlogging. Kildeversjon 1.4.0 overtar den kanoniske pluginen via `pluginId`; ingen ekstra wrapper opprettes. Faktisk lokal klient finner tre ferdigheter, én registrert app og en kontolenke, uten separat MCP-deklarasjon. Dette er kilde-/klientkontroll før workspace-sync, ikke bekreftet GitHub-overtakelse i ChatGPT. Se [migreringsplan](SINGLE-PLUGIN-MIGRATION.md) og [faktisk registrering](evidence/sso-registration.json). Eldre avsnitt nedenfor beskriver tidligere kandidater.
+
 ## Gjeldende OAuth-oppsett: rc.4, 16. november 2026
 
 `tactical-chatgpt` er endret til offentlig authorization-code-klient med påkrevd

@@ -45,18 +45,29 @@
     "tactical-rmm_access_remove"
   ],
   "appBindingVerification": {
-    "mode": "standalone-remote-mcp",
-    "status": "awaiting-workspace-publication-before-canonical-adoption",
-    "prior_personal_plugin_deleted": true,
-    "confirmed_by_user_date": "2026-11-16",
-    "existing_app_dependency_required": true,
-    "workspacePluginId": "Plugin_960c953284a0819184889146d979392f",
-    "note": "New SSO draft and its app mapping were read with Plugin Creator. User confirms successful personal login. Draft is USER/PRIVATE; it must become available in the target workspace before canonical GitHub adoption. Do not put this personal plugin ID in the workspace marketplace. Final goal is one SSO-backed GitHub-managed plugin, not a wrapper plus a second plugin.",
-    "candidateAppId": "asdk_app_6afafd3b578c8191a62956239872dd3b",
-    "candidatePluginId": "plugin_asdk_app_6afafd3b578c8191a62956239872dd3b",
-    "candidateTechnicalName": "dev-6afafd3b578c8191a62956239872dd3b",
-    "candidateScope": "USER",
-    "candidateReleaseId": "PluginRelease_9e484e010ab8819183571e5bfec67887",
-    "candidateVerifiedDate": "2026-11-16"
+    "mode": "registered-app",
+    "distribution": "canonical-github-adoption",
+    "status": "awaiting-workspace-github-sync",
+    "workspacePluginId": "plugin_asdk_app_6afafd3b578c8191a62956239872dd3b",
+    "previousWorkspacePluginId": "Plugin_960c953284a0819184889146d979392f",
+    "app_id": "asdk_app_6afafd3b578c8191a62956239872dd3b",
+    "registration": {
+      "plugin_id": "plugin_asdk_app_6afafd3b578c8191a62956239872dd3b",
+      "name": "dev-6afafd3b578c8191a62956239872dd3b",
+      "scope": "WORKSPACE",
+      "workspace_id": "c32d88fa-1324-44b1-9fce-9d7a166164a4",
+      "current_release_id": "PluginRelease_9e484e010ab8819183571e5bfec67887",
+      "version": "1.0.0",
+      "mcp_url": "https://tactical-mcp.tronderdata.no/chatgpt/mcp",
+      "app_manifest": {
+        "apps": {
+          "dev-6afafd3b578c8191a62956239872dd3b": {
+            "id": "asdk_app_6afafd3b578c8191a62956239872dd3b"
+          }
+        }
+      }
+    },
+    "personal_sso_confirmed_by_user": "2026-11-16",
+    "note": "Source preserves the existing SSO app and plugin IDs. GitHub sync and retirement of the previous wrapper still require workspace verification."
   }
 }

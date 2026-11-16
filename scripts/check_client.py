@@ -47,13 +47,13 @@ def check(root=ROOT):
         process.stdin.write('{"jsonrpc":"2.0","method":"initialized"}\n')
         process.stdin.flush()
         plugin = call(2, "plugin/read", {
-            "pluginName": "tactical-rmm",
+            "pluginName": json.loads((root / ".agents/plugins/marketplace.json").read_text())["plugins"][0]["name"],
             "marketplacePath": str(root / ".agents/plugins/marketplace.json"),
         })["plugin"]
         apps = plugin["apps"]
         binding_path = root / "plugins/tactical-rmm/.app.json"
         expected = json.loads(binding_path.read_text())["apps"] if binding_path.exists() else {}
-        expected_ids = {app["id"] for app in expected.values() if app.get("required")}
+        expected_ids = {app["id"] for app in expected.values() if app.get("required", True)}
         passed = (
             len(apps) == len(expected_ids) == 1
             and {app["id"] for app in apps} == expected_ids
@@ -68,6 +68,7 @@ def check(root=ROOT):
             "registered_apps": len(apps),
             "raw_mcp_servers": len(plugin["mcpServers"]),
             "account_wiring_passed": passed,
+            "connection_url": apps[0].get("installUrl") if len(apps) == 1 else None,
             "oauth_login_tested": False,
             "chatgpt_browser_tested": False,
         }))

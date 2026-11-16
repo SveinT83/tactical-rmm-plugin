@@ -1,0 +1,16 @@
+{
+  "plugin_id": "plugin_asdk_app_6afafd3b578c8191a62956239872dd3b",
+  "name": "dev-6afafd3b578c8191a62956239872dd3b",
+  "scope": "WORKSPACE",
+  "workspace_id": "c32d88fa-1324-44b1-9fce-9d7a166164a4",
+  "current_release_id": "PluginRelease_9e484e010ab8819183571e5bfec67887",
+  "version": "1.0.0",
+  "mcp_url": "https://tactical-mcp.tronderdata.no/chatgpt/mcp",
+  "app_manifest": {
+    "apps": {
+      "dev-6afafd3b578c8191a62956239872dd3b": {
+        "id": "asdk_app_6afafd3b578c8191a62956239872dd3b"
+      }
+    }
+  }
+}

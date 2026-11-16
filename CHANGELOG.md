@@ -1,5 +1,12 @@
 # Endringslogg
 
+## 1.4.0 – 2026-11-16
+
+- GitHub-kilden overtar den eksisterende, delte SSO-pluginen gjennom dens verifiserte `pluginId` og tekniske navn. Ingen ekstra wrapper opprettes.
+- Opprinnelig appkobling er bevart. Tre norske ferdigheter, original logo og visningsnavnet Tactical RMM følger samme oppføring.
+- Portable rot-/MCP-deklarasjoner og den tidligere wrapper-hjelperen er fjernet. Validator og tester avviser feil identitet, feil arbeidsområde og duplikater.
+- Lokal klient finner tre ferdigheter, én registrert app og kontolenke. Arbeidsområdesynk og opprydding av gammel wrapper gjenstår som administratorhandlinger.
+
 ## 1.3.0-rc.4 – 2026-11-16
 
 - Eksisterende `tactical-chatgpt` endret til offentlig OAuth-klient med påkrevd PKCE S256. Pakken bruker provided-klient og tokenautentisering `none`, uten klienthemmelighet.

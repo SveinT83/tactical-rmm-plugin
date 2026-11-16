@@ -10,7 +10,7 @@ Verifisert offentlig metadata 14. november 2026:
 | Scope | `tactical-rmm` |
 | Eksisterende forhåndsregistrerte klient | `tactical-chatgpt` |
 
-Pakken deklarerer endepunktet direkte i `mcp.json` og kompatibilitetsfilen `.mcp.json`, med OAuth-modus `provided`, klient-ID `tactical-chatgpt` og `none`. Ingen ID fra den slettede personlige ChatGPT-pluginen kreves. Klienten er offentlig med påkrevd PKCE S256. Klienthemmelighet skal stå tom. Teknikeren bruker deretter personlig SSO. Web-/arbeidsområdeinstallasjonen må fortsatt sluttkontrolleres i ChatGPT.
+Pakken inkluderer den registrerte SSO-koblingen via `.app.json` og samme kanoniske plugin-ID som markedsplassens `pluginId`. Den bruker eksisterende offentlig klient `tactical-chatgpt` med påkrevd PKCE S256, tokenmetode `none` og ingen klienthemmelighet. Brukeren kobler til konto i pluginen. Arbeidsområdesynk og tilgang etter GitHub-overtakelsen må sluttkontrolleres.
 
 | Observasjon | Oppførsel |
 | --- | --- |

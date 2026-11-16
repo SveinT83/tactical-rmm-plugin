@@ -99,64 +99,37 @@ def validate(root=ROOT):
     require(market["name"] == "tronder-data-tactical-rmm", "Marketplace identity changed")
     require(len(market["plugins"]) == 1, "Expected exactly one marketplace entry")
     entry = market["plugins"][0]
-    require("pluginId" not in entry, "Personal plugin ID must not migrate workspace plugin")
     require(entry["source"]["source"] == "local", "Expected in-repository source")
     package = contained(root, entry["source"]["path"])
-    native = not (package / "plugin.json").exists()
-    manifest = read_json(package / (".codex-plugin/plugin.json" if native else "plugin.json"))
-    if not native:
-        jsonschema.Draft202012Validator(read_json(root / "schemas/plugin.schema.json")).validate(manifest)
-    require(entry["name"] == manifest["name"] == package.name == "tactical-rmm", "Package names differ")
+    require(package.name == "tactical-rmm", "Unexpected package directory")
+    require(not any((package / name).exists() for name in ["plugin.json", "mcp.json", ".mcp.json"]), "Portable components would mask the canonical account binding")
+    manifest = read_json(package / ".codex-plugin/plugin.json")
+    compatibility = manifest
+    connection = read_json(root / "config/connection.json")
+    binding = connection["appBindingVerification"]
+    receipt = binding["registration"]
+    require(receipt.get("scope") == "WORKSPACE" and receipt.get("workspace_id") == "c32d88fa-1324-44b1-9fce-9d7a166164a4", "Registration must belong to the target workspace")
+    require(entry.get("pluginId") == receipt.get("plugin_id") == "plugin_asdk_app_6afafd3b578c8191a62956239872dd3b", "Marketplace must adopt the verified SSO plugin")
+    require(entry["name"] == manifest["name"] == receipt["name"], "Technical name must match the existing SSO plugin")
+    require(binding["workspacePluginId"] == entry["pluginId"], "Canonical workspace plugin identity differs")
     require(bool(SEMVER.fullmatch(manifest["version"])), "Invalid semantic version")
-    extension = ({"interface": manifest["interface"], "onboardingSkill": manifest["onboardingSkill"]}
-                 if native else manifest["extensions"]["com.openai"])
+    extension = {"interface": manifest["interface"], "onboardingSkill": manifest["onboardingSkill"]}
     interface = extension["interface"]
     require(interface["displayName"] == "Tactical RMM", "Unexpected display name")
     require(manifest["author"]["name"] == interface["developerName"] == "Trønder Data", "Publisher differs")
     require(0 < len(interface["shortDescription"]) <= 30, "Subtitle must be 1–30 characters")
     require(interface["category"] == entry["category"] == "Developer Tools", "Category differs")
     require(isinstance(interface["capabilities"], list) and all(isinstance(x, str) and x.strip() for x in interface["capabilities"]), "Invalid capabilities")
-    compatibility = read_json(package / ".codex-plugin/plugin.json")
-    for k in ["name", "version", "description", "author"]:
-        require(compatibility[k] == manifest[k], f"Compatibility mismatch: {k}")
-    for k in ["interface", "onboardingSkill"]:
-        require(compatibility[k] == extension[k], f"OpenAI overlay mismatch: {k}")
-    connection = read_json(root / "config/connection.json")
+    require(manifest.get("apps") == "./.app.json", "Missing account binding")
+    require("mcpServers" not in manifest, "Canonical SSO plugin cannot declare a parallel MCP")
+    apps = read_json(contained(package, manifest["apps"]))
+    require(apps == receipt["app_manifest"], "Account binding differs from the actual registration")
+    require(set(apps) == {"apps"} and len(apps["apps"]) == 1, "Expected one account binding")
+    app = next(iter(apps["apps"].values()))
+    require(set(app) <= {"id", "required"} and app.get("required", True) is True, "Account must remain required")
+    require("plugin_" + app["id"] == entry["pluginId"] and binding["app_id"] == app["id"], "App and plugin identity differ")
+    require(binding["mode"] == "registered-app" and receipt["mcp_url"] == connection["mcpUrl"], "Registered app uses the wrong MCP")
     auth = OAUTH
-    if native:
-        require(compatibility.get("apps") == "./.app.json", "Missing native app binding")
-        require("mcpServers" not in compatibility, "App binding must not declare a parallel MCP")
-        require(not any((package / name).exists() for name in ["mcp.json", ".mcp.json"]), "Raw MCP would mask the registered app")
-        apps = read_json(contained(package, compatibility["apps"]))
-        require(set(apps) == {"apps"} and set(apps["apps"]) == {"tactical-rmm"}, "Expected one registered Tactical app")
-        app = apps["apps"]["tactical-rmm"]
-        require(set(app) == {"id", "required"} and app["required"] is True, "App must be required")
-        require(isinstance(app["id"], str) and bool(APP_ID.fullmatch(app["id"])) and app["id"] != DELETED_APP_ID, "Invalid or deleted app ID")
-        binding = connection["appBindingVerification"]
-        require(binding.get("mode") == "registered-app" and binding.get("app_id") == app["id"], "App differs from verified registration")
-        receipt = binding.get("registration", {})
-        original_apps = receipt.get("app_manifest", {}).get("apps", {})
-        require(len(original_apps) == 1, "Expected one original app mapping")
-        original = next(iter(original_apps.values()))
-        require(set(original) <= {"id", "required"} and original.get("id") == app["id"]
-                and original.get("required", True) is True, "App mapping differs from registration receipt")
-        require(receipt.get("mcp_url") == connection["mcpUrl"], "Registered app uses the wrong MCP")
-        require(receipt.get("scope") == "WORKSPACE" and receipt.get("workspace_id") == "c32d88fa-1324-44b1-9fce-9d7a166164a4", "App is not in the target workspace")
-        require(receipt.get("plugin_id") == "plugin_" + app["id"], "Registration identity mismatch")
-    else:
-        require("apps" not in extension and "apps" not in compatibility and not (package / ".app.json").exists(), "Unverified app dependency")
-        mcp = read_json(package / "mcp.json")
-        require(set(mcp["mcpServers"]) == {"tactical-rmm"}, "Expected one remote MCP server")
-        server = mcp["mcpServers"]["tactical-rmm"]
-        require(set(server) == {"type", "url", "extensions"}, "Static auth headers or extra MCP fields are not allowed")
-        # The published base schema does not yet admit documented vendor auth.
-        transport = json.loads(json.dumps(mcp))
-        transport["mcpServers"]["tactical-rmm"].pop("extensions", None)
-        jsonschema.Draft202012Validator(read_json(root / "schemas/mcp.schema.json")).validate(transport)
-        require(server["type"] == "streamable-http" and server["url"] == connection["mcpUrl"], "Wrong MCP transport or endpoint")
-        require(server.get("extensions") == {"com.openai": {"auth": auth}}, "Unexpected OpenAI OAuth configuration")
-        legacy = read_json(contained(package, compatibility["mcpServers"]))
-        require(legacy == {"mcpServers": {"tactical-rmm": {"url": server["url"], "extensions": server["extensions"]}}}, "Legacy MCP configuration mismatch")
     skills = contained(package, compatibility["skills"])
     skill_paths = sorted(skills.glob("*/SKILL.md"))
     require({p.parent.name for p in skill_paths} == {"tactical-rmm", "tactical-rmm-admin", "tactical-rmm-setup"}, "Expected operational, administration and setup skills")

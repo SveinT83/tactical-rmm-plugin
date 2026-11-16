@@ -1,12 +1,21 @@
 {
   "name": "tronder-data-tactical-rmm",
-  "interface": { "displayName": "Trønder Data – Tactical RMM" },
+  "interface": {
+    "displayName": "Trønder Data – Tactical RMM"
+  },
   "plugins": [
     {
-      "name": "tactical-rmm",
-      "source": { "source": "local", "path": "./plugins/tactical-rmm" },
-      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
-      "category": "Developer Tools"
+      "name": "dev-6afafd3b578c8191a62956239872dd3b",
+      "source": {
+        "source": "local",
+        "path": "./plugins/tactical-rmm"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools",
+      "pluginId": "plugin_asdk_app_6afafd3b578c8191a62956239872dd3b"
     }
   ]
 }

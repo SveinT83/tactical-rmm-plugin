@@ -43,8 +43,8 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(self.root)
 
-    def test_overlay_version_drift_is_rejected(self):
-        self.edit_json("plugins/tactical-rmm/.codex-plugin/plugin.json", lambda x: x.update(version="2.0.0"))
+    def test_invalid_version_is_rejected(self):
+        self.edit_json("plugins/tactical-rmm/.codex-plugin/plugin.json", lambda x: x.update(version="not-semver"))
         with self.assertRaises(ValueError):
             validate(self.root)
 
@@ -59,35 +59,32 @@ class PackageTests(unittest.TestCase):
             validate(self.root)
 
     def test_wrong_mcp_origin_is_rejected(self):
-        self.edit_json("plugins/tactical-rmm/mcp.json", lambda x: x["mcpServers"]["tactical-rmm"].update(url="https://example.invalid/mcp"))
+        self.edit_json("config/connection.json", lambda x: x.update(mcpUrl="https://example.invalid/mcp"))
         with self.assertRaises(ValueError):
             validate(self.root)
 
     def test_mcp_cannot_switch_to_dynamic_client_registration(self):
-        self.edit_json("plugins/tactical-rmm/mcp.json", lambda x: x["mcpServers"]["tactical-rmm"]["extensions"]["com.openai"]["auth"]["client"].update(mode="dcr"))
+        self.edit_json("config/connection.json", lambda x: x["auth"]["client"].update(mode="dcr"))
         with self.assertRaises(ValueError):
             validate(self.root)
 
     def test_public_client_cannot_require_a_secret(self):
-        for path in ["plugins/tactical-rmm/mcp.json", "plugins/tactical-rmm/.mcp.json"]:
-            with self.subTest(path=path):
-                self.edit_json(path, lambda x: x["mcpServers"]["tactical-rmm"]["extensions"]["com.openai"]["auth"]["client"].update(tokenEndpointAuthMethod="client_secret_basic"))
-                with self.assertRaises(ValueError):
-                    validate(self.root)
-                self.edit_json(path, lambda x: x["mcpServers"]["tactical-rmm"]["extensions"]["com.openai"]["auth"]["client"].update(tokenEndpointAuthMethod="none"))
+        self.edit_json("config/connection.json", lambda x: x["auth"]["client"].update(tokenEndpointAuthMethod="client_secret_basic"))
+        with self.assertRaises(ValueError):
+            validate(self.root)
 
     def test_connection_reference_cannot_retain_confidential_client_method(self):
         self.edit_json("config/connection.json", lambda x: x.update(tokenEndpointAuthMethod="client_secret_basic"))
         with self.assertRaises(ValueError):
             validate(self.root)
 
-    def test_static_api_key_header_is_rejected(self):
-        self.edit_json("plugins/tactical-rmm/mcp.json", lambda x: x["mcpServers"]["tactical-rmm"].update(headers={"X-API-Key": "${FORBIDDEN_SHARED_KEY}"}))
+    def test_parallel_static_auth_mcp_is_rejected(self):
+        self.edit_json("plugins/tactical-rmm/.codex-plugin/plugin.json", lambda x: x.update(mcpServers={"extra": {"headers": {"X-API-Key": "${FORBIDDEN_SHARED_KEY}"}}}))
         with self.assertRaises(ValueError):
             validate(self.root)
 
-    def test_legacy_mcp_connection_must_match_portable_connection(self):
-        self.edit_json("plugins/tactical-rmm/.mcp.json", lambda x: x["mcpServers"]["tactical-rmm"].update(url="https://example.invalid/mcp"))
+    def test_raw_mcp_cannot_be_reintroduced(self):
+        (self.root / "plugins/tactical-rmm/.mcp.json").write_text('{"mcpServers": {}}')
         with self.assertRaises(ValueError):
             validate(self.root)
 
@@ -127,9 +124,9 @@ class PackageTests(unittest.TestCase):
         with zipfile.ZipFile(archive) as z:
             names = z.namelist()
             self.assertTrue(all(n.startswith("tactical-rmm/") for n in names))
-            self.assertNotIn("tactical-rmm/.app.json", names)
-            self.assertIn("tactical-rmm/mcp.json", names)
-            self.assertIn("tactical-rmm/.mcp.json", names)
+            self.assertIn("tactical-rmm/.app.json", names)
+            self.assertNotIn("tactical-rmm/mcp.json", names)
+            self.assertNotIn("tactical-rmm/.mcp.json", names)
             self.assertIn("tactical-rmm/.codex-plugin/plugin.json", names)
             self.assertIn("tactical-rmm/skills/tactical-rmm/SKILL.md", names)
             self.assertIn("tactical-rmm/skills/tactical-rmm-admin/SKILL.md", names)
