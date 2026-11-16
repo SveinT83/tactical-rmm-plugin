@@ -1,5 +1,12 @@
 # Endringslogg
 
+## Klargjort overgang til registrert MCP-kobling – 2026-11-16
+
+- Utviklingsverktøy for å binde en verifisert ChatGPT MCP-registrering med samme native pakkeformat som BookStack, uten ny server eller Keycloak-klient.
+- Overgangen bevarer ferdigheter, logo, standardprompt og arbeidsområdeplugin, og avviser feil arbeidsområde, feil MCP-adresse og den slettede registreringen før kildefiler endres.
+- Validator og bygg støtter både nåværende kandidat og registrert appformat. Ekte klient fant tre ferdigheter og én kontolenke i en midlertidig pakke med fiktiv ID. Alle 28 tester bestod.
+- Gjeldende installasjon er fortsatt 1.3.0-rc.3 uten ferdig SSO-kobling. Ny pakke publiseres først etter at faktisk registreringsmetadata er kontrollert.
+
 ## 1.3.0-rc.3 – 2026-11-16
 
 - Oppsettsskillen skiller manglende ChatGPT-kontotilkobling fra manglende personlig Tactical-nøkkel. Den sender ikke teknikeren til Codex eller manuell MCP-registrering.

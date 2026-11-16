@@ -6,6 +6,8 @@ Pluginpakke med tre norske skills og deklarasjon av eksisterende `https://tactic
 
 **Kjent installasjonsfeil:** Arbeidsområdeimporten viser MCP-server og skills, men mangler «Koble til / Legg til konto». Versjon 1.3.0-rc.3 retter veiledningen; den oppretter ikke SSO-koblingen. BookStack bruker en registrert app som denne pakken foreløpig mangler. Eksisterende arbeidsområdeplugin skal beholdes. Faktisk Tactical-appregistrering må verifiseres før den kan bindes til pakken; ikke bruk den slettede appens ID.
 
+[Konkret engangsoppsett for administrator og overgang til BookStacks koblingsformat](docs/SSO-CONNECTION.md). Utviklingsverktøyene støtter nå denne overgangen; aktiv pakke endres først når den faktiske MCP-registreringen er lest tilbake.
+
 Repo: [SveinT83/tactical-rmm-plugin](https://github.com/SveinT83/tactical-rmm-plugin). Kandidaten distribueres fra `main` for import i ChatGPT. Versjonen er fortsatt en testkandidat; personlig OAuth og nettleserflyt sluttkontrolleres ved installasjon.
 
 ## Innhold

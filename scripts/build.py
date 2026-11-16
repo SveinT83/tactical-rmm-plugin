@@ -12,7 +12,8 @@ from validate import ROOT, read_json, require, scan_bytes, validate
 def build(root=ROOT):
     validate(root)
     package = root / "plugins/tactical-rmm"
-    manifest = read_json(package / "plugin.json")
+    native = not (package / "plugin.json").exists()
+    manifest = read_json(package / (".codex-plugin/plugin.json" if native else "plugin.json"))
     files = sorted(p for p in package.rglob("*") if p.is_file())
     out = root / "dist"
     out.mkdir(exist_ok=True)
@@ -27,8 +28,12 @@ def build(root=ROOT):
         require(z.testzip() is None, "Corrupt archive")
         names = set(z.namelist())
         require(names == {"tactical-rmm/" + p.relative_to(package).as_posix() for p in files}, "Archive/source mismatch")
-        require("tactical-rmm/.app.json" not in names, "Deleted app dependency included")
-        require({"tactical-rmm/mcp.json", "tactical-rmm/.mcp.json"} <= names, "MCP configuration missing")
+        if native:
+            require("tactical-rmm/.app.json" in names, "App binding missing")
+            require(not {"tactical-rmm/plugin.json", "tactical-rmm/mcp.json", "tactical-rmm/.mcp.json"} & names, "Native app masked by portable components")
+        else:
+            require("tactical-rmm/.app.json" not in names, "Unverified app dependency included")
+            require({"tactical-rmm/mcp.json", "tactical-rmm/.mcp.json"} <= names, "MCP configuration missing")
         require(not any("marketplace" in n or ".." in Path(n).parts for n in names), "Invalid archive contents")
         for name in names:
             data = z.read(name)

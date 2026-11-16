@@ -15,6 +15,9 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 SEMVER = re.compile(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?\Z")
+APP_ID = re.compile(r"asdk_app_[A-Za-z0-9]+\Z")
+DELETED_APP_ID = "asdk_app_6af232dfb75c81919191e1ab5b5fd9c0"
+OAUTH = {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "client_secret_basic"}, "baseScopes": ["tactical-rmm"]}
 IGNORED = {".git", ".venv", "dist", "build", "node_modules", "__pycache__", ".pytest_cache"}
 
 
@@ -99,11 +102,14 @@ def validate(root=ROOT):
     require("pluginId" not in entry, "Personal plugin ID must not migrate workspace plugin")
     require(entry["source"]["source"] == "local", "Expected in-repository source")
     package = contained(root, entry["source"]["path"])
-    manifest = read_json(package / "plugin.json")
-    jsonschema.Draft202012Validator(read_json(root / "schemas/plugin.schema.json")).validate(manifest)
+    native = not (package / "plugin.json").exists()
+    manifest = read_json(package / (".codex-plugin/plugin.json" if native else "plugin.json"))
+    if not native:
+        jsonschema.Draft202012Validator(read_json(root / "schemas/plugin.schema.json")).validate(manifest)
     require(entry["name"] == manifest["name"] == package.name == "tactical-rmm", "Package names differ")
     require(bool(SEMVER.fullmatch(manifest["version"])), "Invalid semantic version")
-    extension = manifest["extensions"]["com.openai"]
+    extension = ({"interface": manifest["interface"], "onboardingSkill": manifest["onboardingSkill"]}
+                 if native else manifest["extensions"]["com.openai"])
     interface = extension["interface"]
     require(interface["displayName"] == "Tactical RMM", "Unexpected display name")
     require(manifest["author"]["name"] == interface["developerName"] == "Trønder Data", "Publisher differs")
@@ -115,22 +121,39 @@ def validate(root=ROOT):
         require(compatibility[k] == manifest[k], f"Compatibility mismatch: {k}")
     for k in ["interface", "onboardingSkill"]:
         require(compatibility[k] == extension[k], f"OpenAI overlay mismatch: {k}")
-    require("apps" not in extension and "apps" not in compatibility and not (package / ".app.json").exists(), "Deleted app dependency must not be restored")
-    mcp = read_json(package / "mcp.json")
-    require(set(mcp["mcpServers"]) == {"tactical-rmm"}, "Expected one remote MCP server")
-    server = mcp["mcpServers"]["tactical-rmm"]
-    require(set(server) == {"type", "url", "extensions"}, "Static auth headers or extra MCP fields are not allowed")
-    # OpenAI documents vendor auth extensions that the portable base schema
-    # does not yet admit. Validate the standard transport projection against
-    # the unmodified published schema, then validate the documented extension.
-    transport = json.loads(json.dumps(mcp))
-    transport["mcpServers"]["tactical-rmm"].pop("extensions", None)
-    jsonschema.Draft202012Validator(read_json(root / "schemas/mcp.schema.json")).validate(transport)
-    require(server["type"] == "streamable-http" and server["url"] == "https://tactical-mcp.tronderdata.no/chatgpt/mcp", "Wrong MCP transport or endpoint")
-    auth = {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "client_secret_basic"}, "baseScopes": ["tactical-rmm"]}
-    require(server.get("extensions") == {"com.openai": {"auth": auth}}, "Unexpected OpenAI OAuth configuration")
-    legacy = read_json(contained(package, compatibility["mcpServers"]))
-    require(legacy == {"mcpServers": {"tactical-rmm": {"url": server["url"], "extensions": server["extensions"]}}}, "Legacy MCP configuration mismatch")
+    connection = read_json(root / "config/connection.json")
+    auth = OAUTH
+    if native:
+        require(compatibility.get("apps") == "./.app.json", "Missing native app binding")
+        require("mcpServers" not in compatibility, "App binding must not declare a parallel MCP")
+        require(not any((package / name).exists() for name in ["mcp.json", ".mcp.json"]), "Raw MCP would mask the registered app")
+        apps = read_json(contained(package, compatibility["apps"]))
+        require(set(apps) == {"apps"} and set(apps["apps"]) == {"tactical-rmm"}, "Expected one registered Tactical app")
+        app = apps["apps"]["tactical-rmm"]
+        require(set(app) == {"id", "required"} and app["required"] is True, "App must be required")
+        require(isinstance(app["id"], str) and bool(APP_ID.fullmatch(app["id"])) and app["id"] != DELETED_APP_ID, "Invalid or deleted app ID")
+        binding = connection["appBindingVerification"]
+        require(binding.get("mode") == "registered-app" and binding.get("app_id") == app["id"], "App differs from verified registration")
+        receipt = binding.get("registration", {})
+        original_apps = receipt.get("app_manifest", {}).get("apps", {})
+        require(len(original_apps) == 1 and next(iter(original_apps.values())) == app, "App mapping differs from registration receipt")
+        require(receipt.get("mcp_url") == connection["mcpUrl"], "Registered app uses the wrong MCP")
+        require(receipt.get("scope") == "WORKSPACE" and receipt.get("workspace_id") == "c32d88fa-1324-44b1-9fce-9d7a166164a4", "App is not in the target workspace")
+        require(receipt.get("plugin_id") == "plugin_" + app["id"], "Registration identity mismatch")
+    else:
+        require("apps" not in extension and "apps" not in compatibility and not (package / ".app.json").exists(), "Unverified app dependency")
+        mcp = read_json(package / "mcp.json")
+        require(set(mcp["mcpServers"]) == {"tactical-rmm"}, "Expected one remote MCP server")
+        server = mcp["mcpServers"]["tactical-rmm"]
+        require(set(server) == {"type", "url", "extensions"}, "Static auth headers or extra MCP fields are not allowed")
+        # The published base schema does not yet admit documented vendor auth.
+        transport = json.loads(json.dumps(mcp))
+        transport["mcpServers"]["tactical-rmm"].pop("extensions", None)
+        jsonschema.Draft202012Validator(read_json(root / "schemas/mcp.schema.json")).validate(transport)
+        require(server["type"] == "streamable-http" and server["url"] == connection["mcpUrl"], "Wrong MCP transport or endpoint")
+        require(server.get("extensions") == {"com.openai": {"auth": auth}}, "Unexpected OpenAI OAuth configuration")
+        legacy = read_json(contained(package, compatibility["mcpServers"]))
+        require(legacy == {"mcpServers": {"tactical-rmm": {"url": server["url"], "extensions": server["extensions"]}}}, "Legacy MCP configuration mismatch")
     skills = contained(package, compatibility["skills"])
     skill_paths = sorted(skills.glob("*/SKILL.md"))
     require({p.parent.name for p in skill_paths} == {"tactical-rmm", "tactical-rmm-admin", "tactical-rmm-setup"}, "Expected operational, administration and setup skills")
@@ -161,7 +184,6 @@ def validate(root=ROOT):
     for path in package.rglob("*"):
         require(not path.is_symlink(), "Package contains symlink")
         require(not any(p in IGNORED for p in path.relative_to(package).parts), "Generated/local file in package")
-    connection = read_json(root / "config/connection.json")
     require(connection["auth"] == auth, "Connection reference differs from runtime OAuth config")
     require(connection["auth"] == {"type": "oauth", "client": {"mode": "provided", "clientId": "tactical-chatgpt", "tokenEndpointAuthMethod": "client_secret_basic"}, "baseScopes": ["tactical-rmm"]}, "OAuth contract changed")
     require(connection["mcpUrl"] == "https://tactical-mcp.tronderdata.no/chatgpt/mcp", "Wrong MCP endpoint")

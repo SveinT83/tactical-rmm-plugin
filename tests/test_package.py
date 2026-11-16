@@ -53,7 +53,7 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(self.root)
 
-    def test_deleted_app_dependency_cannot_be_restored(self):
+    def test_unverified_app_dependency_cannot_be_added(self):
         (self.root / "plugins/tactical-rmm/.app.json").write_text('{"apps": {}}')
         with self.assertRaises(ValueError):
             validate(self.root)

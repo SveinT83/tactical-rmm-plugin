@@ -10,7 +10,8 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def check():
+def check(root=ROOT):
+    root = Path(root)
     process = subprocess.Popen(
         ["codex", "app-server"], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL, text=True, bufsize=1,
@@ -47,10 +48,10 @@ def check():
         process.stdin.flush()
         plugin = call(2, "plugin/read", {
             "pluginName": "tactical-rmm",
-            "marketplacePath": str(ROOT / ".agents/plugins/marketplace.json"),
+            "marketplacePath": str(root / ".agents/plugins/marketplace.json"),
         })["plugin"]
         apps = plugin["apps"]
-        binding_path = ROOT / "plugins/tactical-rmm/.app.json"
+        binding_path = root / "plugins/tactical-rmm/.app.json"
         expected = json.loads(binding_path.read_text())["apps"] if binding_path.exists() else {}
         expected_ids = {app["id"] for app in expected.values() if app.get("required")}
         passed = (
