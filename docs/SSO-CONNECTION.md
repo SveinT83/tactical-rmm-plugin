@@ -29,6 +29,18 @@ samme innlogging i den observerte arbeidsområdeinstallasjonen.
    begynner med `plugin_asdk_app`. Dette er ikke den GitHub-importerte
    `Plugin_960c953284a0819184889146d979392f`, og ingen hemmelighet skal følge lenken.
 
+Registrering for egen testing gjør ikke automatisk koblingen tilgjengelig for
+kollegaene. Etter tilkoblings- og lesetest må administrator publisere koblingen
+for arbeidsområdet og aktivere tilgang for de aktuelle medlemmene. OpenAIs
+beholdte administrasjonsflyt er **Admin → Plugins → Manage Legacy Apps → Drafts
+→ Publish**. Kontroller de faktiske valgene i kontoen. En personlig/Dev-kobling
+er ikke bevis på at arbeidsområdet har tilgang. Hver ansatt skal deretter bare
+koble til sin egen konto med Keycloak SSO; ingen skal registrere serveren på nytt.
+
+BookStack-historikken viser at Git-pakken ble bundet til en eksisterende
+registrert kobling. Brukeren kunne derfor installere den ferdige Git-pluginen
+og koble til konto uten ny manuell MCP-registrering ved installasjon.
+
 Hvis menyvalget ikke finnes, stopp før en annen import opprettes. Beskriv hvilke
 valg som faktisk vises. Hvis klienthemmeligheten ikke er tilgjengelig, må
 MCP-/Keycloak-administrator legge den inn direkte i det beskyttede feltet.
@@ -68,3 +80,4 @@ SSO og personlig Tactical-tilgang godkjennes først etter faktiske lesetester.
 Kilder: [OpenAIs registreringsflyt](https://developers.openai.com/plugins/build/plugins#create-and-test-a-plugin-locally-with-an-mcp-server),
 [GitHub-import og appreferanser](https://learn.chatgpt.com/docs/enterprise/plugin-management#reference-an-existing-app-with-appjson),
 [OAuth og eksakt callback](https://developers.openai.com/plugins/build/auth#redirect-url).
+Arbeidsområdedeling: [Publisering av MCP-koblinger](https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt).
